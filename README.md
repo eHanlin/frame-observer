@@ -1,4 +1,4 @@
-frame Observer
+frame observer
 ==================================
 
 This is a frame observer.
@@ -35,6 +35,7 @@ frameObserver.registerMethods({
 ## API
 
 ##### on( iframe, eventName, func )
+> listen a event from frame.
 
 ```js
 var iframe = document.querySelector('iframe');
@@ -45,12 +46,14 @@ frameObserver.on( iframe, 'iframeClicked', function(){
 ```
 
 ##### off( iframe, eventName, func )
+> unregister a event from frame.
 
 ```js
 frameObserver.off( iframe, 'iframeClicked', iframeClicked );
 ```
 
 ##### registerMethods( methods )
+> implement some methods for others.
 
 ```js
 frameObserver.registerMethods({
@@ -61,6 +64,7 @@ frameObserver.registerMethods({
 ```
 
 ##### callMethod( iframe, methodName, params... )
+> call a method of iframe or parent.
 
 ```js
 var deferred = frameObserver.callMethod( iframe, "hello", {a:3} );
@@ -71,6 +75,7 @@ deferred.done(function(){
 ```
 
 ##### trigger( name, params... )
+> trigger a event
 
 ```js
 frameObserver.trigger( 'clicked' );
