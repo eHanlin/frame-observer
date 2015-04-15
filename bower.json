@@ -1,0 +1,15 @@
+{
+  "name": "frame-observer",
+  "version": "0.0.1",
+  "authors": [
+    "Sparrow.jang <sparrow.jang@gmail.com>"
+  ],
+  "description": "This is frame observer",
+  "dependencies": {},
+  "keywords": [
+    "iframe",
+    "observer"
+  ],
+  "devDependencies": {
+  }
+}

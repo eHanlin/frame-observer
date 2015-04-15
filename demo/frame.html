@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <title></title>
+        <style>
+          body {
+            height:400px;
+            background:blue;
+          }
+        </style>
+</head>
+<body>
+  <script src="js/config.js"></script>
+  <script src="js/guid.js"></script>
+  <script src="js/deferred.js"></script>
+  <script src="js/util.js"></script>
+  <script src="js/urlUtils.js"></script>
+  <script src="js/EventObserver.js"></script>
+  <script src="js/builder.js"></script>
+  <script src="js/MethodProcessor.js"></script>
+  <script src="js/RegisterMsgProcessor.js"></script>
+  <script src="js/UnregisterMsgProcessor.js"></script>
+  <script src="js/EventMsgProcessor.js"></script>
+  <script src="js/frameObserver.js"></script>
+ 
+  <script>
+    frameObserver.registerMethods({
+      info:function( deferred ){
+        deferred.resolve(1,2,3,5);
+      }
+    });
+    var deferred = frameObserver.callMethod( parent, "callParent", {b:233} );
+    deferred.done(function(){
+      console.log( arguments );
+    });
+    document.body.addEventListener( 'click', function(){
+      frameObserver.trigger( 'clickBody', 1,2,3,4 );
+    });
+  </script>
+</body>
+</html>
+
