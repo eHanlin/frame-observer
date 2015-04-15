@@ -3,6 +3,12 @@ frame observer
 
 This is a frame observer.
 
+## Install
+
+```bash
+bower install frame-observer
+```
+
 ## Install node modules
 
 ```bash
