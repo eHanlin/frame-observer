@@ -70,6 +70,12 @@ deferred.done(function(){
 });
 ```
 
+##### trigger( name, params... )
+
+```js
+frameObserver.trigger( 'clicked' );
+```
+
 ## Run Server
 
 ```bash
