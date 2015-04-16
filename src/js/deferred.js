@@ -12,7 +12,7 @@ var Deferred = (function(){
 
     return function( cb ){
 
-       if ( !this.hasResult() ) this[cbName + 'Cbs_'].push( cb ); else if( this.hasEndTask( cbName ) ) cb.apply( null, this.taskParams_ );
+       if ( !this.hasResult() ) this[cbName + 'Cbs_'].push( cb ); else cb.apply( null, this.taskParams_ );
     };
   };
 
