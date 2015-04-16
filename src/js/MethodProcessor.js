@@ -20,11 +20,18 @@ MethodMsgProcessor.prototype = {
     var methodName = params.shift()
 
     params.unshift( deferred );
-    frameObserver.methods_ && frameObserver.methods_[methodName] && frameObserver.methods_[methodName].apply( frameObserver.methods_, params );
-    deferred.done(function(){
+
+    if ( frameObserver.methods_ && frameObserver.methods_[methodName] ) {
+      frameObserver.methods_[methodName].apply( frameObserver.methods_, params );
+    } else {
+      deferred.reject({err:"the method is not exist."});
+    }
+
+    deferred.always(function(){
       var respMsgEvt = buildMessageEvent( msgEvt.type, 'recv', {result:arguments}, msgEvt.id );
       source.postMessage( JSON.stringify( respMsgEvt ), origin);
     });
+
   },
 
   /**
