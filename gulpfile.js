@@ -4,6 +4,8 @@ pack = require('./package.json'),
 port = 8989;
 var del = require('del');
 
+pack.dist = 'dist';
+
 gulp.task('server', [/*"watch"*/], function () {
   plugins.connect.server({
     root: ['bower_components', '.tmp', 'src', 'demo'],
