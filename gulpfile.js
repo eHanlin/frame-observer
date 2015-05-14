@@ -33,6 +33,7 @@ gulp.task('build', ['clean'], function(){
 
   buildConactScript([
       'src/js/intro.prefix',
+      'src/js/guid.js',
       'src/js/config.js',
       'src/js/deferred.js',
       'src/js/util.js',
