@@ -40,31 +40,36 @@ var util = {
    */
   clone:function( deep, cloneObj, copyObj ){
 
-    var target, obj;
+    var target, obj, params = this.copyArray( arguments ), copyObjs;
 
     if ( typeof deep != "boolean" ) {
       target = deep,
-      obj = cloneObj;
+      copyObjs = params.slice(1);
     } else {
       target = cloneObj;
-      obj = copyObj;
+      copyObjs = params.slice(2);
     }
 
-    for ( var i in obj ) {
+    for ( var index in copyObjs ) {
 
-      if ( util.isArray( obj[i] ) ) {
+      var obj = copyObjs[index];
 
-        target[i] = util.isArray( target[i] ) ? target[i]: [];
+      for ( var i in obj ) {
 
-      } else if ( util.isObject( obj[i] ) ) {
+        if ( util.isArray( obj[i] ) ) {
 
-        target[i] = util.isObject( target[i] ) ? target[i]: {};
+          target[i] = util.isArray( target[i] ) ? target[i]: [];
 
+        } else if ( util.isObject( obj[i] ) ) {
+
+          target[i] = util.isObject( target[i] ) ? target[i]: {};
+
+        }
+
+        if ( deep && util.isObject( obj[i] ) ) clone( target[i], obj[i] );
+
+        else target[i] = obj[i];
       }
-
-      if ( deep && util.isObject( obj[i] ) ) clone( target[i], obj[i] );
-
-      else target[i] = obj[i];
     }
 
     return target;
