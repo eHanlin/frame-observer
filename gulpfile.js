@@ -40,10 +40,10 @@ gulp.task('build', ['clean'], function(){
       'src/js/urlUtils.js',
       'src/js/EventObserver.js',
       'src/js/builder.js',
-      'src/js/MethodProcessor.js',
-      'src/js/RegisterMsgProcessor.js',
-      'src/js/UnregisterMsgProcessor.js',
-      'src/js/EventMsgProcessor.js',
+      'src/js/processor/MethodProcessor.js',
+      'src/js/processor/RegisterMsgProcessor.js',
+      'src/js/processor/UnregisterMsgProcessor.js',
+      'src/js/processor/EventMsgProcessor.js',
       'src/js/frameObserver.js',
       'src/js/outro.suffix'
   ], "frameObserver.js")
