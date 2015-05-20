@@ -39,11 +39,13 @@ gulp.task('build', ['clean'], function(){
       'src/js/util.js',
       'src/js/urlUtils.js',
       'src/js/EventObserver.js',
+      'src/js/StateManager.js',
       'src/js/builder.js',
       'src/js/processor/MethodProcessor.js',
       'src/js/processor/RegisterMsgProcessor.js',
       'src/js/processor/UnregisterMsgProcessor.js',
       'src/js/processor/EventMsgProcessor.js',
+      'src/js/processor/StateProcessor.js',
       'src/js/frameObserver.js',
       'src/js/outro.suffix'
   ], "frameObserver.js")

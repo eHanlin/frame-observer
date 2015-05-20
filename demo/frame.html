@@ -18,11 +18,13 @@
   <script src="js/util.js"></script>
   <script src="js/urlUtils.js"></script>
   <script src="js/EventObserver.js"></script>
+  <script src="js/StateManager.js"></script>
   <script src="js/builder.js"></script>
   <script src="js/processor/MethodProcessor.js"></script>
   <script src="js/processor/RegisterMsgProcessor.js"></script>
   <script src="js/processor/UnregisterMsgProcessor.js"></script>
   <script src="js/processor/EventMsgProcessor.js"></script>
+  <script src="js/processor/StateProcessor.js"></script>
   <script src="js/frameObserver.js"></script>
  
   <script>
@@ -33,11 +35,12 @@
     });
     var deferred = frameObserver.callMethod( parent, "callParent", {b:233} );
     deferred.done(function(){
-      console.log( arguments );
+      console.log( "from parent...", arguments );
     });
     document.body.addEventListener( 'click', function(){
       frameObserver.trigger( 'clickBody', 1,2,3,4 );
     });
+    frameObserver.resolveState('ready', 1,2,3);
   </script>
 </body>
 </html>

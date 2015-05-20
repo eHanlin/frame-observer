@@ -2,11 +2,12 @@
 /**
  * @class
  */
-var MethodMsgProcessor = function( frameObserver ){
+var StateProcessor = function( frameObserver ){
+
   this.frameObserver = frameObserver;
 };
 
-MethodMsgProcessor.prototype = {
+StateProcessor.prototype = {
 
   /**
    * @param {Event} msgEvt
@@ -16,19 +17,11 @@ MethodMsgProcessor.prototype = {
    */
   onRecv:function( msgEvt, source, origin, deferred ){
     var frameObserver = this.frameObserver;
-    var params = msgEvt.data.params;
-    var methodName = params.shift()
+    var data = msgEvt.data;
+    var params = data.params;
 
-    params.unshift( deferred );
-
-    if ( frameObserver.methods_ && frameObserver.methods_[methodName] ) {
-      frameObserver.methods_[methodName].apply( frameObserver.methods_, params );
-    } else {
-      deferred.reject({err:"the method is not exist."});
-    }
-
+    frameObserver.stateManager.assign( params[0], deferred );
     processorBuilder.deferredRecv().apply(this, arguments);
-
   },
 
   /**
@@ -36,7 +29,4 @@ MethodMsgProcessor.prototype = {
    */
   onSendResp:processorBuilder.deferredSendResp()
 };
-
-
-
 

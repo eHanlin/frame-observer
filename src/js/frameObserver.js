@@ -7,12 +7,14 @@ var FrameObserver = function(){
   this.evtMapping = {};
   this.eventObservers = {};
   this.registerEventObserver = new EventObserver();
+  this.stateManager = new StateManager();
 
   this.msgProcessors = {
     method:new MethodMsgProcessor( this ),
     registerEvent:new RegisterMsgProcessor( this ),
     unregisterEvent:new UnregisterMsgProcessor( this ),
-    event:new EventMsgProcessor( this )
+    event:new EventMsgProcessor( this ),
+    state:new StateProcessor( this )
   };
   window.addEventListener( 'message', this.onMessage.bind( this ) );
 };
@@ -159,7 +161,31 @@ FrameObserver.prototype = {
   registerMethods:function( methods ){
 
     this.methods_ = methods;
-  }
+  },
+
+  /**
+   * @param {String} stateName
+   */
+  resolveState:function( stateName ){
+
+    this.stateManager.get( stateName ).resolve( util.copyArray( arguments ).slice(1) );
+  },
+
+  /**
+   * @param {String} stateName
+   */
+  rejectState:function( stateName ){
+
+    this.stateManager.get( stateName ).reject( util.copyArray( arguments ).slice(1) );
+  },
+
+
+  /**
+   * @param {HTMLElement} el
+   * @param {String} stateName
+   * @type Deferred
+   */
+  readyState:buildFrameCaller( 'state' ),
 };
 
 

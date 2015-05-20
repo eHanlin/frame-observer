@@ -12,11 +12,13 @@
   <script src="js/util.js"></script>
   <script src="js/urlUtils.js"></script>
   <script src="js/EventObserver.js"></script>
+  <script src="js/StateManager.js"></script>
   <script src="js/builder.js"></script>
   <script src="js/processor/MethodProcessor.js"></script>
   <script src="js/processor/RegisterMsgProcessor.js"></script>
   <script src="js/processor/UnregisterMsgProcessor.js"></script>
   <script src="js/processor/EventMsgProcessor.js"></script>
+  <script src="js/processor/StateProcessor.js"></script>
   <script src="js/frameObserver.js"></script>
   <iframe src="http://127.0.0.1:8989/frame.html" frameborder="0"></iframe>
 
@@ -27,30 +29,37 @@
         deferred.resolve(2,3,4);
       }
     });
-    setTimeout(function(){
-      var iframe = document.querySelector('iframe');
+    var iframe = document.querySelector('iframe');
 
-      var clickBody = function(){
-        console.log('clicked from frame');
-      };
+    iframe.onload = function() {
 
-      var clickBody2 = function(){
-        console.log('clicked from frame2');
-      };
-
-      frameObserver.on( iframe, 'clickBody', clickBody);
-      frameObserver.on( iframe, 'clickBody', clickBody2);
-
-      setTimeout(function(){
-        frameObserver.off( iframe, 'clickBody', clickBody );
-        frameObserver.off( iframe, 'clickBody', clickBody2 );
-      }, 1000);
-
-      var deferred = frameObserver.callMethod( iframe, "info", {a:3} );
-      deferred.done(function(){
-        console.log( arguments );
+      frameObserver
+      .readyState( iframe, 'ready' )
+      .done(function(){
+        console.log('ready...');
+  
+        var clickBody = function(){
+          console.log('clicked from frame');
+        };
+  
+        var clickBody2 = function(){
+          console.log('clicked from frame2');
+        };
+  
+        frameObserver.on( iframe, 'clickBody', clickBody);
+        frameObserver.on( iframe, 'clickBody', clickBody2);
+  
+        setTimeout(function(){
+          frameObserver.off( iframe, 'clickBody', clickBody );
+          frameObserver.off( iframe, 'clickBody', clickBody2 );
+        }, 1000);
+  
+        var deferred = frameObserver.callMethod( iframe, "info", {a:3} );
+        deferred.done(function(){
+          console.log( "from child...", arguments );
+        });
       });
-    }, 1000);
+    };
   </script>
        
 </body>
