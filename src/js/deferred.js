@@ -12,7 +12,11 @@ var Deferred = (function(){
 
     return function( cb ){
 
-       if ( !this.hasResult() ) this[cbName + 'Cbs_'].push( cb ); else cb.apply( null, this.taskParams_ );
+       if ( !this.hasResult() ) this[cbName + 'Cbs_'].push( cb );
+
+       else if ( this.result_[this.TASK_MAPPING[cbName]] || cbName === 'alway' ) cb.apply( null, this.taskParams_ );
+
+       return this;
     };
   };
 
