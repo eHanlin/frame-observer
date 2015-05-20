@@ -40,6 +40,35 @@ frameObserver.registerMethods({
 
 ## API
 
+##### readyState( iframe, stateName ):Deferred
+> listen a state from frame, deferred will be trigger when state is resolved or rejected.
+
+```js
+var iframe = document.querySelector('iframe');
+frameObserver
+.readyState( iframe, 'ready' )
+.done(function(){
+  console.log('ready state:done...');
+}).
+fail(function(){
+  console.log('ready state:fail...');
+});
+```
+
+##### resolveState( stateName, params... )
+> trigger a state for resolve.
+
+```js
+frameObserver.resolveState('ready');
+```
+
+##### rejectState( stateName, params... )
+> trigger a state for reject.
+
+```js
+frameObserver.rejectState('ready');
+```
+
 ##### on( iframe, eventName, func )
 > listen a event from frame.
 
@@ -69,7 +98,7 @@ frameObserver.registerMethods({
 });
 ```
 
-##### callMethod( iframe, methodName, params... )
+##### callMethod( iframe, methodName, params... ):Deferred
 > call a method of iframe or parent.
 
 ```js
