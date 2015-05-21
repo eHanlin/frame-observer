@@ -35,7 +35,6 @@ gulp.task('build', ['clean'], function(){
       'src/js/intro.prefix',
       'src/js/guid.js',
       'src/js/config.js',
-      'src/js/deferred.js',
       'src/js/util.js',
       'src/js/urlUtils.js',
       'src/js/EventObserver.js',

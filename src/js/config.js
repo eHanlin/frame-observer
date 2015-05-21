@@ -1,3 +1,4 @@
 
-var doc = window.document;
+var doc = window.document,
+Deferred = EH.Deferred;
 

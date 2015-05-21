@@ -5,11 +5,12 @@
     "Sparrow.jang <sparrow.jang@gmail.com>"
   ],
   "description": "This is frame observer",
-  "dependencies": {},
+  "dependencies": {
+    "eh-deferred": "~0.0.3"
+  },
   "keywords": [
     "iframe",
     "observer"
   ],
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
