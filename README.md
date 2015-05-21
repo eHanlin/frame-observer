@@ -15,6 +15,10 @@ bower install frame-observer
 npm install
 ```
 
+## Dependencies
+
+* [eh-deferred](https://github.com/eHanlin/eh-deferred)
+
 ## Usage
 
 index.html
