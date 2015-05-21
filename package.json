@@ -1,6 +1,6 @@
 {
   "name": "frame-observer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/frameObserver.js",
   "description": "This is frame observer",
   "devDependencies": {
