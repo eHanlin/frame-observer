@@ -12,7 +12,8 @@
         </style>
 </head>
 <body>
-  <script src="eh-deferred/dist/deferred.js"></script>
+  <script src="js/buildDeferred.js"></script>
+  <!--<script src="eh-deferred/dist/deferred.js"></script>-->
   <script src="js/config.js"></script>
   <script src="js/guid.js"></script>
   <script src="js/util.js"></script>
@@ -34,8 +35,8 @@
       }
     });
     var deferred = frameObserver.callMethod( parent, "callParent", {b:233} );
-    deferred.done(function(){
-      console.log( "from parent...", arguments );
+    deferred.then(function( resp ){
+      console.log( "from parent...", resp );
     });
     document.body.addEventListener( 'click', function(){
       frameObserver.trigger( 'clickBody', 1,2,3,4 );

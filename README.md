@@ -3,6 +3,8 @@ frame observer
 
 This is a frame observer.
 
+You can need to add [polyfill](https://github.com/JasonBerry/babel-es6-polyfill) script if your browser is not support html5.
+
 ## Install
 
 ```bash
@@ -15,18 +17,15 @@ bower install frame-observer
 npm install
 ```
 
-## Dependencies
-
-* [eh-deferred](https://github.com/eHanlin/eh-deferred)
-
 ## Usage
 
 index.html
 
 ```js
 var iframe = document.querySelector('iframe');
-var deferred = frameObserver.callMethod( iframe, "info", {a:3} );
-deferred.done(function(){
+var promise = frameObserver.callMethod( iframe, "info", {a:3} );
+
+promise.done(function(){
   console.log( arguments );
 });
 ```
@@ -36,19 +35,20 @@ frame.html
 ```js
 frameObserver.registerMethods({
 
-  info:function( deferred ){
-    deferred.resolve(1,2,3,5);
+  info:function( promise ){
+    promise.resolve(1);
   }
 });
 ```
 
 ## API
 
-##### readyState( iframe, stateName ):Deferred
-> listen a state from frame, deferred will be trigger when state is resolved or rejected.
+##### readyState( iframe, stateName ):Promise
+> listen a state from frame, promise will be trigger when state is resolved or rejected.
 
 ```js
 var iframe = document.querySelector('iframe');
+
 frameObserver
 .readyState( iframe, 'ready' )
 .done(function(){
@@ -106,9 +106,9 @@ frameObserver.registerMethods({
 > call a method of iframe or parent.
 
 ```js
-var deferred = frameObserver.callMethod( iframe, "hello", {a:3} );
+var promise = frameObserver.callMethod( iframe, "hello", {a:3} );
 
-deferred.done(function(){
+promise.done(function(){
   console.log( arguments );
 });
 ```

@@ -1,12 +1,11 @@
 {
   "name": "frame-observer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "authors": [
     "Sparrow.jang <sparrow.jang@gmail.com>"
   ],
   "description": "This is frame observer",
   "dependencies": {
-    "eh-deferred": "~0.0.3"
   },
   "keywords": [
     "iframe",
