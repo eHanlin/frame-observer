@@ -25,7 +25,7 @@ index.html
 var iframe = document.querySelector('iframe');
 var promise = frameObserver.callMethod( iframe, "info", {a:3} );
 
-promise.done(function(){
+promise.then(function(){
   console.log( arguments );
 });
 ```
@@ -51,10 +51,9 @@ var iframe = document.querySelector('iframe');
 
 frameObserver
 .readyState( iframe, 'ready' )
-.done(function(){
+.then(function(){
   console.log('ready state:done...');
-}).
-fail(function(){
+},function(){
   console.log('ready state:fail...');
 });
 ```
@@ -108,7 +107,7 @@ frameObserver.registerMethods({
 ```js
 var promise = frameObserver.callMethod( iframe, "hello", {a:3} );
 
-promise.done(function(){
+promise.then(function(){
   console.log( arguments );
 });
 ```
