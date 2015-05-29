@@ -101,7 +101,7 @@ frameObserver.registerMethods({
 });
 ```
 
-##### callMethod( iframe, methodName, params... ):Deferred
+##### callMethod( iframe, methodName, params... ):Promise
 > call a method of iframe or parent.
 
 ```js
