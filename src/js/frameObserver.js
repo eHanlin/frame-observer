@@ -25,17 +25,25 @@ FrameObserver.prototype = {
    * @param {Event} evt
    */
   onMessage:function( evt ){
-    var origin = evt.origin;
-    var msgEvt = JSON.parse( evt.data );
-    var deferred = Deferred();
-    var source = evt.source;
+    var origin = evt.origin, msgEvt;
+    try {
+      msgEvt = JSON.parse( evt.data );
+    } catch (e){
+      msgEvt = null;
+    }
 
-    //console.log( msgEvt, evt );
-    //console.log( evt );
+    //event filter if source is not sended from FrameObserver
+    if ( util.isObject( msgEvt ) && FRAME_OBSERVER in msgEvt ) {
+      var deferred = Deferred();
+      var source = evt.source;
 
-    var msgProcessor = this.msgProcessors[ msgEvt.type ];
+      //console.log( msgEvt, evt );
+      //console.log( evt );
 
-    if ( msgEvt.direction == 'send' ) msgProcessor.onRecv( msgEvt, source, origin, deferred ); else msgProcessor.onSendResp( msgEvt, origin, deferred );
+      var msgProcessor = this.msgProcessors[ msgEvt.type ];
+
+      if ( msgEvt.direction == 'send' ) msgProcessor.onRecv( msgEvt, source, origin, deferred ); else msgProcessor.onSendResp( msgEvt, origin, deferred );
+    }
   },
 
   /**

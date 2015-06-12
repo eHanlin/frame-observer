@@ -9,7 +9,9 @@ var buildMessageEvent = function( type, direction, data, id, extraAttrs ){
   var infoData = data || {};
   var _id = id ? id: guid();
   var _extraAttrs = extraAttrs || {};
-  return util.clone( {type:type, data:infoData, id:_id, timestamp:+new Date(), direction:direction}, _extraAttrs );
+  var defaults = {};
+  defaults[FRAME_OBSERVER] = true;
+  return util.clone( {type:type, data:infoData, id:_id, timestamp:+new Date(), direction:direction}, _extraAttrs, defaults );
 };
 
 /**
@@ -36,7 +38,7 @@ var buildFrameCaller = function( eventType, extraAttrs ){
 
     origin = urlUtils.getOriginByFrameEl( el );
     contentWindow = util.getContentWindowByEl( el );
-    contentWindow.postMessage( JSON.stringify( msgEvt ), origin );
+    util.postMessage( contentWindow, msgEvt, origin );
 
     return deferred;
   }
@@ -77,7 +79,7 @@ var processorBuilder = {
 
         return function(){
           var respMsgEvt = buildMessageEvent( msgEvt.type, 'recv', {result:arguments}, msgEvt.id, {deferredState:deferredState} );
-          source.postMessage( JSON.stringify( respMsgEvt ), origin); 
+          util.postMessage( source, respMsgEvt, origin );
         };
       };
       deferred.done(buildPostingOrigin( 'done' ));

@@ -119,6 +119,15 @@ var util = {
   getContentWindowByEl:function( el ){
   
     return util.isElement( el ) ? el.contentWindow: el; 
+  },
+
+  /**
+   * @param {Window} win
+   * @param {Object} data
+   * @param {String} origin
+   */
+  postMessage:function( win, data, origin ){
+    win.postMessage( JSON.stringify( data ), origin );
   }
 };
 

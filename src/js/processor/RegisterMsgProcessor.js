@@ -26,7 +26,7 @@ RegisterMsgProcessor.prototype = {
       //console.log( arguments );
       var respMsgEvt = buildMessageEvent( 'event', 'send', {result:util.copyArray( arguments ) }, msgEvt.id );
       respMsgEvt.frameEventId = frameEventId;
-      source.postMessage( JSON.stringify( respMsgEvt ), origin);
+      util.postMessage( source, respMsgEvt, origin );
     }, {target:source} );
   },
 
