@@ -8,6 +8,7 @@ var FrameObserver = function(){
   this.eventObservers = {};
   this.registerEventObserver = new EventObserver();
   this.stateManager = new StateManager();
+  this.methods_ = {};
 
   this.msgProcessors = {
     method:new MethodMsgProcessor( this ),
@@ -168,7 +169,9 @@ FrameObserver.prototype = {
    */
   registerMethods:function( methods ){
 
-    this.methods_ = methods;
+    for (var i in methods) {
+      this.methods_[i] = methods[i];
+    };
   },
 
   /**
