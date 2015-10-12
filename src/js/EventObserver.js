@@ -84,7 +84,7 @@ EventObserver.prototype = {
    * @param {*} opts.target
    */
   trigger:function( opts ){
-    var name, target;
+    var name, target, timeStamp = (+new Date());
 
     if ( util.isString( opts ) ) {
       name = opts;
@@ -112,7 +112,8 @@ EventObserver.prototype = {
     for ( i in eventList ) {
 
       var evt = {
-        type:name
+        type:name,
+        timeStamp:timeStamp
       };
 
       var params = originParams.slice(1);
