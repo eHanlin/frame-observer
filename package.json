@@ -1,8 +1,12 @@
 {
   "name": "frame-observer",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "main": "dist/frameObserver.js",
   "description": "This is frame observer",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/eHanlin/frame-observer.git"
+  },
   "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-bower": "0.0.6",
