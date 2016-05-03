@@ -14,7 +14,7 @@ bower install frame-observer
 ## Install node modules
 
 ```bash
-npm install
+npm install frame-observer
 ```
 
 ## Usage
