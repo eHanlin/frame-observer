@@ -131,4 +131,9 @@ gulp server
 gulp
 ```
 
+## Test
+
+```bash
+npm run test
+```
 
