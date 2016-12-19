@@ -61,7 +61,8 @@ var processorBuilder = {
       var respTmp = frameObserver.evtMapping[msgEvt.id];
       delete frameObserver.evtMapping[msgEvt.id];
       if ( msgEvt.deferredState === 'done' ) callMethodName = 'resolve';
-      respTmp.deferred[callMethodName](msgEvt.data);
+      //ignore it when observer is not sender
+      if (respTmp) respTmp.deferred[callMethodName](msgEvt.data);
     };
   },
 
