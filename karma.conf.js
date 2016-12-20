@@ -11,9 +11,10 @@ module.exports = function(config) {
     files:[
       'test/**/*.html',
       'test/**.html',
+      'test/**.js',
       //'src/**/*.js',
       //'dist/**/*.js'
-      {pattern:'dist/**/*.js', include:false}
+      'dist/**/*.js'
     ], 
     port:8000,
     captureTimeout:60000,
@@ -31,13 +32,15 @@ module.exports = function(config) {
         { type: 'text' },
         { type: 'lcov' }
       ]   
-    }   
+    }//,
+    //logLevel: config.LOG_DEBUG
   };
 
   if (isCI) {
   //if (true) {
     configs.browsers = ['PhantomJS'];
     configs.files.push('./node_modules/phantomjs-polyfill/bind-polyfill.js');
+    configs.files.push('./node_modules/babel-polyfill/dist/polyfill.js');
   }
 
   config.set(configs);

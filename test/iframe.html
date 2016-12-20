@@ -6,6 +6,8 @@
   <title></title>
 </head>
 <body>
+  <script src="/base/node_modules/phantomjs-polyfill/bind-polyfill.js"></script>
+  <script src="/base/node_modules/babel-polyfill/dist/polyfill.js"></script>
   <script src="../dist/frameObserver.js"></script>
   <!--<script src="../src/js/buildDeferred.js"></script>
   <script src="../src/js/config.js"></script>
@@ -28,7 +30,7 @@
         deferred.resolve(valueA + valueB);
       },
       initIdle:function() {
-        setTimeout(()=> frameObserver.trigger('idle', +new Date()), 1000);
+        setTimeout(function(){ frameObserver.trigger('idle', +new Date()); }, 1000);
       }
     });
     frameObserver.resolveState('ready');
