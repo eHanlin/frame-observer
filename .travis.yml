@@ -25,4 +25,4 @@ after_success:
 
 notifications:
   email:
-- sparrow.jang@gmail.com
+    - sparrow.jang@gmail.com
