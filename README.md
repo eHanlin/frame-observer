@@ -1,7 +1,5 @@
-frame observer
+frame observer [![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![codecov][codecov-badge]][codecov] 
 ==================================
-
-[![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![codecov][codecov-badge]][codecov] 
 
 This is a frame observer.
 
@@ -138,4 +136,13 @@ gulp
 ```bash
 npm run test
 ```
+
+[npm-badge]: https://img.shields.io/npm/v/frame-observer.svg?style=flat-square
+[npm]: https://www.npmjs.com/package/frame-observer
+ 
+[build-badge]: https://img.shields.io/travis/eHanlin/frame-observer/master.svg?style=flat-square
+[build]: https://travis-ci.org/eHanlin/frame-observer
+ 
+[codecov-badge]: https://codecov.io/gh/eHanlin/frame-observer/branch/master/graph/badge.svg
+[codecov]: https://codecov.io/gh/eHanlin/frame-observer
 
