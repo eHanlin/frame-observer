@@ -1,6 +1,8 @@
 frame observer
 ==================================
 
+[![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![codecov][codecov-badge]][codecov] 
+
 This is a frame observer.
 
 You can need to add [polyfill](https://github.com/JasonBerry/babel-es6-polyfill) script if your browser is not support html5.
