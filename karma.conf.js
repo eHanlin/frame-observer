@@ -20,6 +20,9 @@ module.exports = function(config) {
     captureTimeout:60000,
     browserNoActivityTimeout:10000,
     frameworks: [ 'mocha', 'chai' ],
+    preprocessors: {
+        'dist/**/*.js': 'coverage'
+    },
     client: {
       mocha: {}
     },
