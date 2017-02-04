@@ -122,13 +122,13 @@ frameObserver.trigger( 'clicked' );
 ## Run Server
 
 ```bash
-gulp server
+npm run dev
 ```
 
 ## Build minfy
 
 ```bash
-gulp
+npm run build
 ```
 
 ## Test
