@@ -1,7 +1,7 @@
 frame observer [![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![codecov][codecov-badge]][codecov] 
 ==================================
 
-This is a frame observer.
+This is iframe observer. Be Able to use it when you need get frame states or event listeners.
 
 You need to add [polyfill](https://github.com/JasonBerry/babel-es6-polyfill) script if your browser is not support es6.
 
