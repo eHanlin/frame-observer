@@ -6,6 +6,7 @@ if (process.env.NODE_ENV === undefined) {
   entry.unshift('webpack-dev-server/client?http://localhost:8080');
 }
 
+console.log(path.join(__dirname, 'src'));
 module.exports = { 
   devtool: 'cheap-module-eval-source-map',
   entry: entry,
@@ -19,12 +20,15 @@ module.exports = {
 
   ],  
   module: {
-    loaders: [
+    rules: [
       {  
         test: /\.js$/,
         loaders: [ 'babel-loader' ],
         exclude: /node_modules/,
-        include: __dirname
+        include: [
+          path.join(__dirname, 'src'),
+          path.join(__dirname, 'test')
+        ]
       }
     ] 
   }   

@@ -1,11 +1,22 @@
 var webpackCfg = require('./webpack.config');
+var path = require('path');
 var isCI = process.env.CI;
+
+webpackCfg.module.rules.unshift({
+  enforce:'pre',
+  test: /\.js$/,
+  loaders:['isparta-loader'],
+  exclude: /node_modules/,
+  include: [
+    path.join(__dirname, 'src')
+  ]
+});
 
 process.env.NODE_ENV = 'test';
 
 module.exports = function(config) {
 
-  var preprocessorTasks = [ 'webpack', 'sourcemap', 'coverage' ];
+  var preprocessorTasks = [ 'webpack', 'sourcemap'];
 
   var configs = {
     basePath: '',
