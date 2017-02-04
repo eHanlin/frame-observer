@@ -11,13 +11,10 @@ module.exports = function(config) {
     basePath: '',
     browsers: [ 'Chrome' ],
     files:[
-      'test/**/*.html',
-      'test/**.html',
-      'test/loadTest.js',
+      {pattern:'test/**/*.html', included:false},
+      {pattern:'test/**.html', included:false},
       {pattern:'test/initFrame.js', included:false},
-      //'src/**/*.js',
-      //'dist/**/*.js'
-      //'dist/**/*.js'
+      'test/loadTest.js'
     ], 
     port:8000,
     captureTimeout:60000,

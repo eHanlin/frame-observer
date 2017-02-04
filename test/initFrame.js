@@ -2,8 +2,6 @@
 'use strict';
 
 import frameObserver from '../src/js/index';
-console.log(frameObserver);
-console.log(window);
 
 frameObserver.registerMethods({
   add:function( deferred, valueA, valueB ){
