@@ -1,3 +1,6 @@
+
+import util from './util';
+
 /**
  * @namespace
  *
@@ -22,4 +25,6 @@ var urlUtils = {
     return util.isElement( el ) ? urlUtils.getOrigin( el.src ) : document.referrer;
   }
 };
+
+export default urlUtils;
 

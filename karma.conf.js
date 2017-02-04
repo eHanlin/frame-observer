@@ -1,9 +1,11 @@
-
+var webpackCfg = require('./webpack.config');
 var isCI = process.env.CI;
 
 process.env.NODE_ENV = 'test';
 
 module.exports = function(config) {
+
+  var preprocessorTasks = [ 'webpack', 'sourcemap', 'coverage' ];
 
   var configs = {
     basePath: '',
@@ -11,23 +13,30 @@ module.exports = function(config) {
     files:[
       'test/**/*.html',
       'test/**.html',
-      'test/**.js',
+      'test/loadTest.js',
+      {pattern:'test/initFrame.js', included:false},
       //'src/**/*.js',
       //'dist/**/*.js'
-      'dist/**/*.js'
+      //'dist/**/*.js'
     ], 
     port:8000,
     captureTimeout:60000,
     browserNoActivityTimeout:10000,
+    singleRun: true,
     frameworks: [ 'mocha', 'chai' ],
-    preprocessors: {
-        'dist/**/*.js': 'coverage'
-    },
     client: {
       mocha: {}
     },
-    singleRun: true,
+    preprocessors: {
+        //'dist/**/*.js': 'coverage',
+        'test/loadTest.js': preprocessorTasks,
+        'test/initFrame.js': preprocessorTasks
+    },
     reporters: [ 'mocha', 'coverage' ],
+    webpack: webpackCfg,
+    webpackServer: {
+          noInfo: true
+    },
     coverageReporter: {
       dir: 'coverage/',
       reporters: [

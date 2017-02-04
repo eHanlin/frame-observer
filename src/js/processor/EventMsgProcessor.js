@@ -1,4 +1,6 @@
 
+import util from '../util';
+
 /**
  * @class
  */
@@ -35,4 +37,5 @@ EventMsgProcessor.prototype = {
   }
 };
 
+export default EventMsgProcessor;
 

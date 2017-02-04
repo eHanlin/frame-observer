@@ -1,4 +1,10 @@
 
+import util from './util';
+import guid from './guid';
+import urlUtils from './urlUtils';
+import Deferred from './buildDeferred';
+import {FRAME_OBSERVER} from './config'; 
+
 /**
  * @param {String} type
  * @param {Object} data
@@ -88,4 +94,6 @@ var processorBuilder = {
     };
   }
 };
+
+export {buildMessageEvent, buildFrameCaller, processorBuilder};
 

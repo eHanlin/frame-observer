@@ -1,4 +1,6 @@
 
+import {processorBuilder} from '../builder'; 
+
 /**
  * @class
  */
@@ -38,5 +40,5 @@ MethodMsgProcessor.prototype = {
 };
 
 
-
+export default MethodMsgProcessor;
 

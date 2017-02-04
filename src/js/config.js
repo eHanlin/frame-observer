@@ -1,5 +1,7 @@
 
-var doc = window.document,
-Deferred = buildDeferred,
-FRAME_OBSERVER = "_FRAME_OBSERVER_";
+//var doc = window.document;
+//var Deferred = buildDeferred;
+export const FRAME_OBSERVER = "_FRAME_OBSERVER_";
+
+
 

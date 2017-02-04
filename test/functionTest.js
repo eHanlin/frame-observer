@@ -1,6 +1,8 @@
 
 'use strict';
 
+import frameObserver from '../src/js/index';
+
 describe('Ready Test', function () {
  
   it('should has a callback when iframe is ready', function(done) {

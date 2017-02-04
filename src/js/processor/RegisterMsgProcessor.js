@@ -1,4 +1,7 @@
 
+import util from '../util';
+import {buildMessageEvent} from '../builder'; 
+
 /**
  * @class
  */
@@ -38,4 +41,5 @@ RegisterMsgProcessor.prototype = {
   }
 };
 
+export default RegisterMsgProcessor;
 

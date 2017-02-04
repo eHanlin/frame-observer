@@ -51,3 +51,5 @@ var buildDeferred = function() {
 };
 
 
+export default buildDeferred;
+

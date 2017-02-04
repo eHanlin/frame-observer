@@ -1,4 +1,6 @@
 
+import {processorBuilder} from '../builder';
+
 /**
  * @class
  */
@@ -29,4 +31,6 @@ StateProcessor.prototype = {
    */
   onSendResp:processorBuilder.deferredSendResp()
 };
+
+export default StateProcessor;
 

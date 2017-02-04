@@ -1,4 +1,18 @@
 
+import {FRAME_OBSERVER} from './config';
+import util from './util';
+import guid from './guid';
+import EventObserver from './EventObserver';
+import StateManager from './StateManager';
+import EventMsgProcessor from './processor/EventMsgProcessor';
+import RegisterMsgProcessor from './processor/RegisterMsgProcessor';
+import StateProcessor from './processor/StateProcessor';
+import UnregisterMsgProcessor from './processor/UnregisterMsgProcessor';
+import MethodMsgProcessor from './processor/MethodMsgProcessor';
+import {buildFrameCaller} from './builder';
+import Deferred from './buildDeferred';
+
+
 /**
  * @class
  */
@@ -202,6 +216,8 @@ FrameObserver.prototype = {
 
 var frameObserver = new FrameObserver();
 
-if ( typeof window !== "undefined" ) window.frameObserver = frameObserver;
-if ( typeof module !== "undefined" ) module.exports = frameObserver;
+//if ( typeof window !== "undefined" ) window.frameObserver = frameObserver;
+//if ( typeof module !== "undefined" ) module.exports = frameObserver;
+
+export default frameObserver;
 

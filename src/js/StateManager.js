@@ -1,4 +1,6 @@
 
+import Deferred from './buildDeferred';
+
 /**
  * @class
  */
@@ -28,4 +30,6 @@ StateManager.prototype = {
     return deferred ? deferred : this.stateDeferredMap[stateName] = Deferred();
   }
 };
+
+export default StateManager;
 

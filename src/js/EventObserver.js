@@ -1,4 +1,6 @@
 
+import util from './util';
+
 /**
  * @class
  */
@@ -133,4 +135,6 @@ EventObserver.prototype = {
   }
 };
 
+
+export default EventObserver;
 

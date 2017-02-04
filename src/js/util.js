@@ -1,3 +1,6 @@
+
+import guid from './guid';
+
 /***
  * @namespace
  */
@@ -91,7 +94,7 @@ var util = {
    * @param {String} tagName
    */
   createElement:function( tagName ){
-    return doc.createElement( tagName );
+    return document.createElement( tagName );
   },
 
   DATA_KEY:guid(),
@@ -131,4 +134,5 @@ var util = {
   }
 };
 
+export default util;
 
