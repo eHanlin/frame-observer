@@ -91,11 +91,11 @@ frameObserver.off( iframe, 'iframeClicked', iframeClicked );
 ```
 
 ##### registerMethods( methods )
-> implement some methods for others.
+> implement some methods for other iframes. The method inputs will inject `promise` and `parameters`.
 
 ```js
 frameObserver.registerMethods({
-  hello:function(){
+  hello:function(promise, parameter1, parameter2 ...){
     console.log('hello by self');
   }
 });
