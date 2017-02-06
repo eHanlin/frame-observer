@@ -10,7 +10,7 @@
   "scripts": {
     "test": "karma start",
     "watch": "webpack --progress --colors --watch",
-    "build": "NODE_ENV='production' webpack",
+    "build": "NODE_ENV='production' webpack --devtool source-map",
     "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base . --host 0.0.0.0"
   },
   "devDependencies": {
