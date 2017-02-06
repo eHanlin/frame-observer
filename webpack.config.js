@@ -11,10 +11,10 @@ module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: entry,
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, 'dist'),
     libraryTarget:'umd',
     library:'frameObserver',
-    filename: 'bundle.js'
+    filename: 'frameObserver.js'
   },  
   plugins: [
 
