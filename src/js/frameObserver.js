@@ -11,6 +11,7 @@ import UnregisterMsgProcessor from './processor/UnregisterMsgProcessor';
 import MethodMsgProcessor from './processor/MethodMsgProcessor';
 import {buildFrameCaller} from './builder';
 import Deferred from './buildDeferred';
+import FrameObserverContext from './FrameObserverContext';
 
 
 /**
@@ -211,6 +212,14 @@ FrameObserver.prototype = {
    * @type Deferred
    */
   readyState:buildFrameCaller( 'state' ),
+
+  /**
+   * @param {HTMLElement|Window} el
+   * @type FrameObserverContext
+   */
+  getContext:function(el) {
+    return new FrameObserverContext(el);
+  }
 };
 
 

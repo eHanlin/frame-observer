@@ -34,9 +34,10 @@
     var iframe = document.querySelector('iframe');
 
     iframe.onload = function() {
+      var context = frameObserver.getContext(iframe);
 
-      frameObserver
-      .readyState( iframe, 'ready' )
+      context
+      .readyState( 'ready' )
       .then(function(){
         console.log('ready...');
   
@@ -48,15 +49,15 @@
           console.log('clicked from frame2');
         };
   
-        frameObserver.on( iframe, 'clickBody', clickBody);
-        frameObserver.on( iframe, 'clickBody', clickBody2);
+        context.on('clickBody', clickBody);
+        context.on('clickBody', clickBody2);
   
         setTimeout(function(){
-          frameObserver.off( iframe, 'clickBody', clickBody );
-          frameObserver.off( iframe, 'clickBody', clickBody2 );
+          context.off('clickBody', clickBody );
+          context.off('clickBody', clickBody2 );
         }, 1000);
   
-        var deferred = frameObserver.callMethod( iframe, "info", {a:3} );
+        var deferred = context.callMethod("info", {a:3});
         deferred.then(function(resp){
           console.log( "from child...", resp );
         });

@@ -35,7 +35,8 @@
         deferred.resolve(1,2,3,5);
       }
     });
-    var deferred = frameObserver.callMethod( parent, "callParent", {b:233} );
+    var parentContext = frameObserver.getContext(parent);
+    var deferred = parentContext.callMethod( "callParent", {b:233} );
     deferred.then(function( resp ){
       console.log( "from parent...", resp );
     });

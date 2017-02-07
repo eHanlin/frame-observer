@@ -43,6 +43,8 @@ frameObserver.registerMethods({
 
 ## API
 
+### frameObserver
+
 ##### readyState( iframe, stateName ):Promise
 > listen a state from frame, promise will be trigger when state is resolved or rejected.
 
@@ -118,6 +120,31 @@ promise.then(function(){
 ```js
 frameObserver.trigger( 'clicked' );
 ```
+
+##### getContext(el):FrameObserverContext
+> get a el context
+
+```js
+frameObserver.getContext(iframe);
+```
+
+### FrameObserverContext
+
+##### on(eventName, func)
+> listen a event from context.
+
+##### off(eventName, func)
+> unregister a event from context.
+
+
+##### readyState(stateName):Promise
+> listen a state from context.
+
+##### callMethod(methodName, params...):Promise
+> call a method of context.
+
+##### getElement():HTMLElement
+> get a element from context.
 
 ## Run Server
 
