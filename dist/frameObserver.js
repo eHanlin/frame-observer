@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -263,7 +263,7 @@ var _guid = __webpack_require__(3);
 
 var _guid2 = _interopRequireDefault(_guid);
 
-var _urlUtils = __webpack_require__(14);
+var _urlUtils = __webpack_require__(15);
 
 var _urlUtils2 = _interopRequireDefault(_urlUtils);
 
@@ -477,228 +477,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _frameObserver = __webpack_require__(8);
-
-var _frameObserver2 = _interopRequireDefault(_frameObserver);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _frameObserver2.default;
-
-module.exports = _frameObserver2.default;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _util = __webpack_require__(0);
-
-var _util2 = _interopRequireDefault(_util);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @class
- */
-var EventObserver = function EventObserver() {
-
-  this.events = {};
-};
-
-EventObserver.prototype = {
-
-  /**
-   * @param {String} name
-   * @param {function} func
-   * @param {Object} opts
-   * @param {*} opts.target
-   * @param {boolean} opts.once is a inner variable
-   */
-  on: function on(name, func, opts) {
-    var opts = opts || {};
-
-    if (!this.events[name]) this.events[name] = [];
-
-    this.events[name].push({
-      func: func,
-      once: opts.once || false,
-      target: opts.target || null
-    });
-  },
-
-  /**
-   * @param {String} name
-   * @param {function} func
-   */
-  once: function once(name, func) {
-
-    this.on(name, func, { once: true });
-  },
-
-  /**
-   * @param {String} name
-   * @param {function} func
-   * @param {*} target
-   */
-  off: function off(name, func, target) {
-
-    var eventList = this.events[name] || [];
-
-    if (arguments.length === 1) {
-
-      delete this.events[name];
-    } else {
-
-      for (var i in eventList) {
-        var evt = eventList[i];
-
-        if (evt.func === func && (evt.target === null || evt.target === target) || func === undefined && evt.target === target) {
-
-          eventList.splice(i, 1);
-          break;
-        }
-      }
-    }
-  },
-
-  /**
-   * @param {String} eventName
-   * @type Number
-   */
-  getEventNumber: function getEventNumber(eventName) {
-
-    return this.events[eventName] ? this.events[eventName].length : 0;
-  },
-
-  /**
-   * @param {String} name
-   */
-  /**
-   * @param {Objects} opts
-   * @param {String} opts.name
-   * @param {*} opts.target
-   */
-  trigger: function trigger(opts) {
-    var name,
-        target,
-        timeStamp = +new Date();
-
-    if (_util2.default.isString(opts)) {
-      name = opts;
-    } else {
-      name = opts.name;
-      target = opts.target || null;
-    }
-
-    var eventList = this.events[name] || [],
-        i;
-    var originParams = _util2.default.copyArray(arguments);
-
-    if (target) {
-
-      eventList = function (eventList, target) {
-        var filterList = [];
-
-        for (var i in eventList) {
-          if (eventList[i].target === target) filterList.push(eventList[i]);
-        }
-
-        return filterList;
-      }(eventList, target);
-    }
-
-    for (i in eventList) {
-
-      var evt = {
-        type: name,
-        timeStamp: timeStamp
-      };
-
-      var params = originParams.slice(1);
-
-      params.unshift(evt);
-      eventList[i].func.apply(null, params);
-    }
-
-    for (i = 0; i < eventList.length; i++) {
-
-      if (eventList[i].once) {
-
-        target ? this.off(name, opts.func, opts.target) : this.off(name, opts.func);
-      }
-    }
-  }
-};
-
-exports.default = EventObserver;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _buildDeferred = __webpack_require__(2);
-
-var _buildDeferred2 = _interopRequireDefault(_buildDeferred);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @class
- */
-var StateManager = function StateManager() {
-
-  this.stateDeferredMap = {};
-};
-
-StateManager.prototype = {
-
-  /**
-   * @param {String} stateName
-   * @param {Deferred} deferred
-   */
-  assign: function assign(stateName, deferred) {
-    var stateDeferred = this.get(stateName);
-    stateDeferred.done(deferred.resolve.bind(deferred));
-    stateDeferred.fail(deferred.reject.bind(deferred));
-  },
-
-  /**
-   * @param {String} stateName
-   * @type Deferred
-   */
-  get: function get(stateName) {
-    var deferred = this.stateDeferredMap[stateName];
-    return deferred ? deferred : this.stateDeferredMap[stateName] = (0, _buildDeferred2.default)();
-  }
-};
-
-exports.default = StateManager;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _config = __webpack_require__(4);
 
 var _util = __webpack_require__(0);
@@ -709,31 +487,31 @@ var _guid = __webpack_require__(3);
 
 var _guid2 = _interopRequireDefault(_guid);
 
-var _EventObserver = __webpack_require__(6);
+var _EventObserver = __webpack_require__(7);
 
 var _EventObserver2 = _interopRequireDefault(_EventObserver);
 
-var _StateManager = __webpack_require__(7);
+var _StateManager = __webpack_require__(9);
 
 var _StateManager2 = _interopRequireDefault(_StateManager);
 
-var _EventMsgProcessor = __webpack_require__(9);
+var _EventMsgProcessor = __webpack_require__(10);
 
 var _EventMsgProcessor2 = _interopRequireDefault(_EventMsgProcessor);
 
-var _RegisterMsgProcessor = __webpack_require__(11);
+var _RegisterMsgProcessor = __webpack_require__(12);
 
 var _RegisterMsgProcessor2 = _interopRequireDefault(_RegisterMsgProcessor);
 
-var _StateProcessor = __webpack_require__(12);
+var _StateProcessor = __webpack_require__(13);
 
 var _StateProcessor2 = _interopRequireDefault(_StateProcessor);
 
-var _UnregisterMsgProcessor = __webpack_require__(13);
+var _UnregisterMsgProcessor = __webpack_require__(14);
 
 var _UnregisterMsgProcessor2 = _interopRequireDefault(_UnregisterMsgProcessor);
 
-var _MethodMsgProcessor = __webpack_require__(10);
+var _MethodMsgProcessor = __webpack_require__(11);
 
 var _MethodMsgProcessor2 = _interopRequireDefault(_MethodMsgProcessor);
 
@@ -742,6 +520,10 @@ var _builder = __webpack_require__(1);
 var _buildDeferred = __webpack_require__(2);
 
 var _buildDeferred2 = _interopRequireDefault(_buildDeferred);
+
+var _FrameObserverContext = __webpack_require__(8);
+
+var _FrameObserverContext2 = _interopRequireDefault(_FrameObserverContext);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -941,7 +723,15 @@ FrameObserver.prototype = {
    * @param {String} stateName
    * @type Deferred
    */
-  readyState: (0, _builder.buildFrameCaller)('state')
+  readyState: (0, _builder.buildFrameCaller)('state'),
+
+  /**
+   * @param {HTMLElement|Window} el
+   * @type FrameObserverContext
+   */
+  getContext: function getContext(el) {
+    return new _FrameObserverContext2.default(el);
+  }
 };
 
 var frameObserver = new FrameObserver();
@@ -952,7 +742,307 @@ var frameObserver = new FrameObserver();
 exports.default = frameObserver;
 
 /***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _frameObserver = __webpack_require__(5);
+
+var _frameObserver2 = _interopRequireDefault(_frameObserver);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _frameObserver2.default;
+
+module.exports = _frameObserver2.default;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _util = __webpack_require__(0);
+
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @class
+ */
+var EventObserver = function EventObserver() {
+
+  this.events = {};
+};
+
+EventObserver.prototype = {
+
+  /**
+   * @param {String} name
+   * @param {function} func
+   * @param {Object} opts
+   * @param {*} opts.target
+   * @param {boolean} opts.once is a inner variable
+   */
+  on: function on(name, func, opts) {
+    var opts = opts || {};
+
+    if (!this.events[name]) this.events[name] = [];
+
+    this.events[name].push({
+      func: func,
+      once: opts.once || false,
+      target: opts.target || null
+    });
+  },
+
+  /**
+   * @param {String} name
+   * @param {function} func
+   */
+  once: function once(name, func) {
+
+    this.on(name, func, { once: true });
+  },
+
+  /**
+   * @param {String} name
+   * @param {function} func
+   * @param {*} target
+   */
+  off: function off(name, func, target) {
+
+    var eventList = this.events[name] || [];
+
+    if (arguments.length === 1) {
+
+      delete this.events[name];
+    } else {
+
+      for (var i in eventList) {
+        var evt = eventList[i];
+
+        if (evt.func === func && (evt.target === null || evt.target === target) || func === undefined && evt.target === target) {
+
+          eventList.splice(i, 1);
+          break;
+        }
+      }
+    }
+  },
+
+  /**
+   * @param {String} eventName
+   * @type Number
+   */
+  getEventNumber: function getEventNumber(eventName) {
+
+    return this.events[eventName] ? this.events[eventName].length : 0;
+  },
+
+  /**
+   * @param {String} name
+   */
+  /**
+   * @param {Objects} opts
+   * @param {String} opts.name
+   * @param {*} opts.target
+   */
+  trigger: function trigger(opts) {
+    var name,
+        target,
+        timeStamp = +new Date();
+
+    if (_util2.default.isString(opts)) {
+      name = opts;
+    } else {
+      name = opts.name;
+      target = opts.target || null;
+    }
+
+    var eventList = this.events[name] || [],
+        i;
+    var originParams = _util2.default.copyArray(arguments);
+
+    if (target) {
+
+      eventList = function (eventList, target) {
+        var filterList = [];
+
+        for (var i in eventList) {
+          if (eventList[i].target === target) filterList.push(eventList[i]);
+        }
+
+        return filterList;
+      }(eventList, target);
+    }
+
+    for (i in eventList) {
+
+      var evt = {
+        type: name,
+        timeStamp: timeStamp
+      };
+
+      var params = originParams.slice(1);
+
+      params.unshift(evt);
+      eventList[i].func.apply(null, params);
+    }
+
+    for (i = 0; i < eventList.length; i++) {
+
+      if (eventList[i].once) {
+
+        target ? this.off(name, opts.func, opts.target) : this.off(name, opts.func);
+      }
+    }
+  }
+};
+
+exports.default = EventObserver;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _frameObserver = __webpack_require__(5);
+
+var _frameObserver2 = _interopRequireDefault(_frameObserver);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FrameObserverContext = function () {
+  function FrameObserverContext(scope) {
+    _classCallCheck(this, FrameObserverContext);
+
+    this.scope = scope;
+  }
+
+  _createClass(FrameObserverContext, [{
+    key: 'on',
+    value: function on() {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      _frameObserver2.default.on.apply(_frameObserver2.default, [this.scope].concat(args));
+      return this;
+    }
+  }, {
+    key: 'off',
+    value: function off() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      _frameObserver2.default.off.apply(_frameObserver2.default, [this.scope].concat(args));
+      return this;
+    }
+  }, {
+    key: 'readyState',
+    value: function readyState() {
+      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      return _frameObserver2.default.readyState.apply(_frameObserver2.default, [this.scope].concat(args));
+    }
+  }, {
+    key: 'callMethod',
+    value: function callMethod() {
+      for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+
+      return _frameObserver2.default.callMethod.apply(_frameObserver2.default, [this.scope].concat(args));
+    }
+  }, {
+    key: 'getElement',
+    value: function getElement() {
+      return this.scope instanceof HTMLElement ? this.scope : null;
+    }
+  }]);
+
+  return FrameObserverContext;
+}();
+
+exports.default = FrameObserverContext;
+
+/***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _buildDeferred = __webpack_require__(2);
+
+var _buildDeferred2 = _interopRequireDefault(_buildDeferred);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @class
+ */
+var StateManager = function StateManager() {
+
+  this.stateDeferredMap = {};
+};
+
+StateManager.prototype = {
+
+  /**
+   * @param {String} stateName
+   * @param {Deferred} deferred
+   */
+  assign: function assign(stateName, deferred) {
+    var stateDeferred = this.get(stateName);
+    stateDeferred.done(deferred.resolve.bind(deferred));
+    stateDeferred.fail(deferred.reject.bind(deferred));
+  },
+
+  /**
+   * @param {String} stateName
+   * @type Deferred
+   */
+  get: function get(stateName) {
+    var deferred = this.stateDeferredMap[stateName];
+    return deferred ? deferred : this.stateDeferredMap[stateName] = (0, _buildDeferred2.default)();
+  }
+};
+
+exports.default = StateManager;
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1007,7 +1097,7 @@ EventMsgProcessor.prototype = {
 exports.default = EventMsgProcessor;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1059,7 +1149,7 @@ MethodMsgProcessor.prototype = {
 exports.default = MethodMsgProcessor;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1117,7 +1207,7 @@ RegisterMsgProcessor.prototype = {
 exports.default = RegisterMsgProcessor;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1163,7 +1253,7 @@ StateProcessor.prototype = {
 exports.default = StateProcessor;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1208,7 +1298,7 @@ UnregisterMsgProcessor.prototype = {
 exports.default = UnregisterMsgProcessor;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1252,10 +1342,10 @@ var urlUtils = {
 exports.default = urlUtils;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(5);
+module.exports = __webpack_require__(6);
 
 
 /***/ })
