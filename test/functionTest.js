@@ -11,7 +11,7 @@ describe('Ready Test', function () {
 
     iframe.onload = function() {
 
-      describe('Listen idle event from iframe', function() {
+      describe('listen idle event from iframe', function() {
         this.timeout(10000);
 
         it('should recv a idle event', function(idleDone) {
@@ -26,7 +26,7 @@ describe('Ready Test', function () {
       .readyState( iframe, 'ready' )
       .then(function(){
 
-         describe('Call iframe "add" method', function() {
+         describe('call iframe "add" method', function() {
            this.timeout(10000);
            var valueA = 5;
            var valueB = 6;

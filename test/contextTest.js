@@ -10,9 +10,15 @@ describe('Context Ready Test', function () {
     var iframe = document.createElement('iframe');
     var context = frameObserver.getContext(iframe);
 
+    describe('call "context.getElement"', function() {
+      it('should equal original element', function() {
+        expect(context.getElement(), iframe);
+      });
+    });
+
     iframe.onload = function() {
 
-      describe('Listen idle event from context', function() {
+      describe('listen idle event from context', function() {
         this.timeout(10000);
 
         it('should recv a idle event', function(idleDone) {
@@ -27,7 +33,7 @@ describe('Context Ready Test', function () {
       .readyState( 'ready' )
       .then(function(){
 
-         describe('Call context "add" method', function() {
+         describe('call context "add" method', function() {
            this.timeout(10000);
            var valueA = 5;
            var valueB = 6;
