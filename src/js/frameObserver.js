@@ -1,5 +1,7 @@
 
-import {FRAME_OBSERVER} from './config';
+import {FRAME_OBSERVER, FRAME_EVENT_ID} from './constants/Config';
+import {MESSAGE, SEND} from './constants/Event';
+import {METHOD, REGISTER_EVENT, UNREGISTER_EVENT, STATE, EVENT} from './constants/MessageType';
 import util from './util';
 import guid from './guid';
 import EventObserver from './EventObserver';
@@ -26,13 +28,13 @@ var FrameObserver = function(){
   this.methods_ = {};
 
   this.msgProcessors = {
-    method:new MethodMsgProcessor( this ),
-    registerEvent:new RegisterMsgProcessor( this ),
-    unregisterEvent:new UnregisterMsgProcessor( this ),
-    event:new EventMsgProcessor( this ),
-    state:new StateProcessor( this )
+    [METHOD]:new MethodMsgProcessor( this ),
+    [REGISTER_EVENT]:new RegisterMsgProcessor( this ),
+    [UNREGISTER_EVENT]:new UnregisterMsgProcessor( this ),
+    [EVENT]:new EventMsgProcessor( this ),
+    [STATE]:new StateProcessor( this )
   };
-  window.addEventListener( 'message', this.onMessage.bind( this ) );
+  window.addEventListener( MESSAGE, this.onMessage.bind( this ) );
 };
 
 FrameObserver.prototype = {
@@ -58,7 +60,7 @@ FrameObserver.prototype = {
 
       var msgProcessor = this.msgProcessors[ msgEvt.type ];
 
-      if ( msgEvt.direction == 'send' ) msgProcessor.onRecv( msgEvt, source, origin, deferred ); else msgProcessor.onSendResp( msgEvt, origin, deferred );
+      if ( msgEvt.direction == SEND ) msgProcessor.onRecv( msgEvt, source, origin, deferred ); else msgProcessor.onSendResp( msgEvt, origin, deferred );
     }
   },
 
@@ -73,9 +75,9 @@ FrameObserver.prototype = {
     if ( util.isElement( el ) ) {
       frameEventId = (function( id ){
         var frameEventId = id ? id : guid();
-        util.data( el, 'frameEventId', frameEventId );
+        util.data( el, FRAME_EVENT_ID, frameEventId );
         return frameEventId;
-      })(util.data( el, 'frameEventId' ));
+      })(util.data( el, FRAME_EVENT_ID ));
     }
     return frameEventId;
   },
@@ -164,19 +166,19 @@ FrameObserver.prototype = {
    * @param {HTMLElement} el
    * @type Deferred
    */
-  callMethod:buildFrameCaller( 'method' ),
+  callMethod:buildFrameCaller( METHOD ),
 
   /**
    * @param {HTMLElement} el
    * @type Deferred
    */
-  registerEvent:buildFrameCaller( 'registerEvent' ),
+  registerEvent:buildFrameCaller( REGISTER_EVENT ),
 
   /**
    * @param {HTMLElement} el
    * @type Deferred
    */
-  unregisterEvent:buildFrameCaller( 'unregisterEvent' ),
+  unregisterEvent:buildFrameCaller( UNREGISTER_EVENT ),
 
 
   /**
@@ -211,7 +213,7 @@ FrameObserver.prototype = {
    * @param {String} stateName
    * @type Deferred
    */
-  readyState:buildFrameCaller( 'state' ),
+  readyState:buildFrameCaller( STATE ),
 
   /**
    * @param {HTMLElement|Window} el

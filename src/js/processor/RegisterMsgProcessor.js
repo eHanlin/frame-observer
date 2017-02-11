@@ -1,6 +1,8 @@
 
 import util from '../util';
 import {buildMessageEvent} from '../builder'; 
+import {SEND} from '../constants/Event';
+import {EVENT} from '../constants/MessageType';
 
 /**
  * @class
@@ -27,7 +29,7 @@ RegisterMsgProcessor.prototype = {
     //console.log( arguments , param);
     frameObserver.registerEventObserver.on( eventName, function(){
       //console.log( arguments );
-      var respMsgEvt = buildMessageEvent( 'event', 'send', {result:util.copyArray( arguments ) }, msgEvt.id );
+      var respMsgEvt = buildMessageEvent( EVENT, SEND, {result:util.copyArray( arguments ) }, msgEvt.id );
       respMsgEvt.frameEventId = frameEventId;
       util.postMessage( source, respMsgEvt, origin );
     }, {target:source} );

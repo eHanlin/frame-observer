@@ -3,7 +3,8 @@ import util from './util';
 import guid from './guid';
 import urlUtils from './urlUtils';
 import Deferred from './buildDeferred';
-import {FRAME_OBSERVER} from './config'; 
+import {FRAME_OBSERVER} from './constants/Config'; 
+import {SEND, RECV} from './constants/Event';
 
 /**
  * @param {String} type
@@ -35,7 +36,7 @@ var buildFrameCaller = function( eventType, extraAttrs ){
     var deferred = Deferred();
     var origin;
     var contentWindow;
-    var msgEvt = buildMessageEvent( eventType, 'send', {params:util.copyArray( arguments ).slice(1)}, null, extraAttrs );
+    var msgEvt = buildMessageEvent( eventType, SEND, {params:util.copyArray( arguments ).slice(1)}, null, extraAttrs );
     this.evtMapping[msgEvt.id] = {
       el:el,
       id:msgEvt.id,
@@ -85,7 +86,7 @@ var processorBuilder = {
       var buildPostingOrigin = function( deferredState ){
 
         return function(){
-          var respMsgEvt = buildMessageEvent( msgEvt.type, 'recv', {result:arguments}, msgEvt.id, {deferredState:deferredState} );
+          var respMsgEvt = buildMessageEvent( msgEvt.type, RECV, {result:arguments}, msgEvt.id, {deferredState:deferredState} );
           util.postMessage( source, respMsgEvt, origin );
         };
       };
