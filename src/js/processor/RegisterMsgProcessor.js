@@ -1,5 +1,5 @@
 
-import util from '../util';
+import util from '../utils/util';
 import {buildMessageEvent} from '../builder'; 
 import {SEND} from '../constants/Event';
 import {EVENT} from '../constants/MessageType';

@@ -1,7 +1,7 @@
 
-import util from './util';
-import guid from './guid';
-import urlUtils from './urlUtils';
+import util from './utils/util';
+import guid from './utils/guid';
+import urlUtils from './utils/urlUtils';
 import Deferred from './buildDeferred';
 import {FRAME_OBSERVER} from './constants/Config'; 
 import {SEND, RECV} from './constants/Event';

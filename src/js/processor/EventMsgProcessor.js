@@ -1,5 +1,5 @@
 
-import util from '../util';
+import util from '../utils/util';
 
 /**
  * @class

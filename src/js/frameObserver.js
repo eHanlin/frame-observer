@@ -2,8 +2,8 @@
 import {FRAME_OBSERVER, FRAME_EVENT_ID} from './constants/Config';
 import {MESSAGE, SEND} from './constants/Event';
 import {METHOD, REGISTER_EVENT, UNREGISTER_EVENT, STATE, EVENT} from './constants/MessageType';
-import util from './util';
-import guid from './guid';
+import util from './utils/util';
+import guid from './utils/guid';
 import EventObserver from './EventObserver';
 import StateManager from './StateManager';
 import EventMsgProcessor from './processor/EventMsgProcessor';
