@@ -792,7 +792,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _frameObserver2.default;
 
 
-if (typeof window !== 'undefined' && typeof window.frameObserver !== 'undefined') window.frameObserver = _frameObserver2.default;
+if (typeof window !== 'undefined' && typeof window.frameObserver === 'undefined') window.frameObserver = _frameObserver2.default;
 module.exports = _frameObserver2.default;
 
 /***/ }),
