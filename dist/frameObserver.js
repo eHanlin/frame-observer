@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 18);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -89,7 +89,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _guid = __webpack_require__(3);
+var _guid = __webpack_require__(4);
 
 var _guid2 = _interopRequireDefault(_guid);
 
@@ -259,11 +259,11 @@ var _util = __webpack_require__(0);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _guid = __webpack_require__(3);
+var _guid = __webpack_require__(4);
 
 var _guid2 = _interopRequireDefault(_guid);
 
-var _urlUtils = __webpack_require__(15);
+var _urlUtils = __webpack_require__(17);
 
 var _urlUtils2 = _interopRequireDefault(_urlUtils);
 
@@ -271,7 +271,9 @@ var _buildDeferred = __webpack_require__(2);
 
 var _buildDeferred2 = _interopRequireDefault(_buildDeferred);
 
-var _config = __webpack_require__(4);
+var _Config = __webpack_require__(5);
+
+var _Event = __webpack_require__(3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -286,7 +288,7 @@ var buildMessageEvent = function buildMessageEvent(type, direction, data, id, ex
   var _id = id ? id : (0, _guid2.default)();
   var _extraAttrs = extraAttrs || {};
   var defaults = {};
-  defaults[_config.FRAME_OBSERVER] = true;
+  defaults[_Config.FRAME_OBSERVER] = true;
   return _util2.default.clone({ type: type, data: infoData, id: _id, timestamp: +new Date(), direction: direction }, _extraAttrs, defaults);
 };
 
@@ -305,7 +307,7 @@ var buildFrameCaller = function buildFrameCaller(eventType, extraAttrs) {
     var deferred = (0, _buildDeferred2.default)();
     var origin;
     var contentWindow;
-    var msgEvt = buildMessageEvent(eventType, 'send', { params: _util2.default.copyArray(arguments).slice(1) }, null, extraAttrs);
+    var msgEvt = buildMessageEvent(eventType, _Event.SEND, { params: _util2.default.copyArray(arguments).slice(1) }, null, extraAttrs);
     this.evtMapping[msgEvt.id] = {
       el: el,
       id: msgEvt.id,
@@ -354,7 +356,7 @@ var processorBuilder = {
       var buildPostingOrigin = function buildPostingOrigin(deferredState) {
 
         return function () {
-          var respMsgEvt = buildMessageEvent(msgEvt.type, 'recv', { result: arguments }, msgEvt.id, { deferredState: deferredState });
+          var respMsgEvt = buildMessageEvent(msgEvt.type, _Event.RECV, { result: arguments }, msgEvt.id, { deferredState: deferredState });
           _util2.default.postMessage(source, respMsgEvt, origin);
         };
       };
@@ -441,15 +443,9 @@ exports.default = buildDeferred;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var guid = function guid() {
-  var s4 = function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-  };
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-};
-
-exports.default = guid;
+var MESSAGE = exports.MESSAGE = 'message';
+var SEND = exports.SEND = 'send';
+var RECV = exports.RECV = 'recv';
 
 /***/ }),
 /* 4 */
@@ -462,9 +458,14 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-//var doc = window.document;
-//var Deferred = buildDeferred;
-var FRAME_OBSERVER = exports.FRAME_OBSERVER = "_FRAME_OBSERVER_";
+var guid = function guid() {
+  var s4 = function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  };
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+};
+
+exports.default = guid;
 
 /***/ }),
 /* 5 */
@@ -476,42 +477,75 @@ var FRAME_OBSERVER = exports.FRAME_OBSERVER = "_FRAME_OBSERVER_";
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var FRAME_OBSERVER = exports.FRAME_OBSERVER = '_FRAME_OBSERVER_';
+var FRAME_EVENT_ID = exports.FRAME_EVENT_ID = 'frameEventId';
 
-var _config = __webpack_require__(4);
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var EVENT = exports.EVENT = 'event';
+var METHOD = exports.METHOD = 'method';
+var REGISTER_EVENT = exports.REGISTER_EVENT = 'registerEvent';
+var UNREGISTER_EVENT = exports.UNREGISTER_EVENT = 'unregisterEvent';
+var STATE = exports.STATE = 'state';
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Config = __webpack_require__(5);
+
+var _Event = __webpack_require__(3);
+
+var _MessageType = __webpack_require__(6);
 
 var _util = __webpack_require__(0);
 
 var _util2 = _interopRequireDefault(_util);
 
-var _guid = __webpack_require__(3);
+var _guid = __webpack_require__(4);
 
 var _guid2 = _interopRequireDefault(_guid);
 
-var _EventObserver = __webpack_require__(7);
+var _EventObserver = __webpack_require__(9);
 
 var _EventObserver2 = _interopRequireDefault(_EventObserver);
 
-var _StateManager = __webpack_require__(9);
+var _StateManager = __webpack_require__(11);
 
 var _StateManager2 = _interopRequireDefault(_StateManager);
 
-var _EventMsgProcessor = __webpack_require__(10);
+var _EventMsgProcessor = __webpack_require__(12);
 
 var _EventMsgProcessor2 = _interopRequireDefault(_EventMsgProcessor);
 
-var _RegisterMsgProcessor = __webpack_require__(12);
+var _RegisterMsgProcessor = __webpack_require__(14);
 
 var _RegisterMsgProcessor2 = _interopRequireDefault(_RegisterMsgProcessor);
 
-var _StateProcessor = __webpack_require__(13);
+var _StateProcessor = __webpack_require__(15);
 
 var _StateProcessor2 = _interopRequireDefault(_StateProcessor);
 
-var _UnregisterMsgProcessor = __webpack_require__(14);
+var _UnregisterMsgProcessor = __webpack_require__(16);
 
 var _UnregisterMsgProcessor2 = _interopRequireDefault(_UnregisterMsgProcessor);
 
-var _MethodMsgProcessor = __webpack_require__(11);
+var _MethodMsgProcessor = __webpack_require__(13);
 
 var _MethodMsgProcessor2 = _interopRequireDefault(_MethodMsgProcessor);
 
@@ -521,16 +555,19 @@ var _buildDeferred = __webpack_require__(2);
 
 var _buildDeferred2 = _interopRequireDefault(_buildDeferred);
 
-var _FrameObserverContext = __webpack_require__(8);
+var _FrameObserverContext = __webpack_require__(10);
 
 var _FrameObserverContext2 = _interopRequireDefault(_FrameObserverContext);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /**
  * @class
  */
 var FrameObserver = function FrameObserver() {
+  var _msgProcessors;
 
   this.evtMapping = {};
   this.eventObservers = {};
@@ -538,14 +575,8 @@ var FrameObserver = function FrameObserver() {
   this.stateManager = new _StateManager2.default();
   this.methods_ = {};
 
-  this.msgProcessors = {
-    method: new _MethodMsgProcessor2.default(this),
-    registerEvent: new _RegisterMsgProcessor2.default(this),
-    unregisterEvent: new _UnregisterMsgProcessor2.default(this),
-    event: new _EventMsgProcessor2.default(this),
-    state: new _StateProcessor2.default(this)
-  };
-  window.addEventListener('message', this.onMessage.bind(this));
+  this.msgProcessors = (_msgProcessors = {}, _defineProperty(_msgProcessors, _MessageType.METHOD, new _MethodMsgProcessor2.default(this)), _defineProperty(_msgProcessors, _MessageType.REGISTER_EVENT, new _RegisterMsgProcessor2.default(this)), _defineProperty(_msgProcessors, _MessageType.UNREGISTER_EVENT, new _UnregisterMsgProcessor2.default(this)), _defineProperty(_msgProcessors, _MessageType.EVENT, new _EventMsgProcessor2.default(this)), _defineProperty(_msgProcessors, _MessageType.STATE, new _StateProcessor2.default(this)), _msgProcessors);
+  window.addEventListener(_Event.MESSAGE, this.onMessage.bind(this));
 };
 
 FrameObserver.prototype = {
@@ -563,7 +594,7 @@ FrameObserver.prototype = {
     }
 
     //event filter if source is not sended from FrameObserver
-    if (_util2.default.isObject(msgEvt) && _config.FRAME_OBSERVER in msgEvt) {
+    if (_util2.default.isObject(msgEvt) && _Config.FRAME_OBSERVER in msgEvt) {
       var deferred = (0, _buildDeferred2.default)();
       var source = evt.source;
 
@@ -572,7 +603,7 @@ FrameObserver.prototype = {
 
       var msgProcessor = this.msgProcessors[msgEvt.type];
 
-      if (msgEvt.direction == 'send') msgProcessor.onRecv(msgEvt, source, origin, deferred);else msgProcessor.onSendResp(msgEvt, origin, deferred);
+      if (msgEvt.direction == _Event.SEND) msgProcessor.onRecv(msgEvt, source, origin, deferred);else msgProcessor.onSendResp(msgEvt, origin, deferred);
     }
   },
 
@@ -587,9 +618,9 @@ FrameObserver.prototype = {
     if (_util2.default.isElement(el)) {
       frameEventId = function (id) {
         var frameEventId = id ? id : (0, _guid2.default)();
-        _util2.default.data(el, 'frameEventId', frameEventId);
+        _util2.default.data(el, _Config.FRAME_EVENT_ID, frameEventId);
         return frameEventId;
-      }(_util2.default.data(el, 'frameEventId'));
+      }(_util2.default.data(el, _Config.FRAME_EVENT_ID));
     }
     return frameEventId;
   },
@@ -678,19 +709,19 @@ FrameObserver.prototype = {
    * @param {HTMLElement} el
    * @type Deferred
    */
-  callMethod: (0, _builder.buildFrameCaller)('method'),
+  callMethod: (0, _builder.buildFrameCaller)(_MessageType.METHOD),
 
   /**
    * @param {HTMLElement} el
    * @type Deferred
    */
-  registerEvent: (0, _builder.buildFrameCaller)('registerEvent'),
+  registerEvent: (0, _builder.buildFrameCaller)(_MessageType.REGISTER_EVENT),
 
   /**
    * @param {HTMLElement} el
    * @type Deferred
    */
-  unregisterEvent: (0, _builder.buildFrameCaller)('unregisterEvent'),
+  unregisterEvent: (0, _builder.buildFrameCaller)(_MessageType.UNREGISTER_EVENT),
 
   /**
    * @param {Object} methods
@@ -723,7 +754,7 @@ FrameObserver.prototype = {
    * @param {String} stateName
    * @type Deferred
    */
-  readyState: (0, _builder.buildFrameCaller)('state'),
+  readyState: (0, _builder.buildFrameCaller)(_MessageType.STATE),
 
   /**
    * @param {HTMLElement|Window} el
@@ -742,7 +773,7 @@ var frameObserver = new FrameObserver();
 exports.default = frameObserver;
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -752,7 +783,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _frameObserver = __webpack_require__(5);
+var _frameObserver = __webpack_require__(7);
 
 var _frameObserver2 = _interopRequireDefault(_frameObserver);
 
@@ -760,10 +791,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = _frameObserver2.default;
 
+
+if (typeof window !== 'undefined' && typeof window.frameObserver !== 'undefined') window.frameObserver = _frameObserver2.default;
 module.exports = _frameObserver2.default;
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -915,7 +948,7 @@ EventObserver.prototype = {
 exports.default = EventObserver;
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -927,7 +960,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _frameObserver = __webpack_require__(5);
+var _frameObserver = __webpack_require__(7);
 
 var _frameObserver2 = _interopRequireDefault(_frameObserver);
 
@@ -993,7 +1026,7 @@ var FrameObserverContext = function () {
 exports.default = FrameObserverContext;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1042,7 +1075,7 @@ StateManager.prototype = {
 exports.default = StateManager;
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1097,7 +1130,7 @@ EventMsgProcessor.prototype = {
 exports.default = EventMsgProcessor;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1149,7 +1182,7 @@ MethodMsgProcessor.prototype = {
 exports.default = MethodMsgProcessor;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1164,6 +1197,10 @@ var _util = __webpack_require__(0);
 var _util2 = _interopRequireDefault(_util);
 
 var _builder = __webpack_require__(1);
+
+var _Event = __webpack_require__(3);
+
+var _MessageType = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1192,7 +1229,7 @@ RegisterMsgProcessor.prototype = {
     //console.log( arguments , param);
     frameObserver.registerEventObserver.on(eventName, function () {
       //console.log( arguments );
-      var respMsgEvt = (0, _builder.buildMessageEvent)('event', 'send', { result: _util2.default.copyArray(arguments) }, msgEvt.id);
+      var respMsgEvt = (0, _builder.buildMessageEvent)(_MessageType.EVENT, _Event.SEND, { result: _util2.default.copyArray(arguments) }, msgEvt.id);
       respMsgEvt.frameEventId = frameEventId;
       _util2.default.postMessage(source, respMsgEvt, origin);
     }, { target: source });
@@ -1207,7 +1244,7 @@ RegisterMsgProcessor.prototype = {
 exports.default = RegisterMsgProcessor;
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1253,7 +1290,7 @@ StateProcessor.prototype = {
 exports.default = StateProcessor;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1298,7 +1335,7 @@ UnregisterMsgProcessor.prototype = {
 exports.default = UnregisterMsgProcessor;
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1342,10 +1379,10 @@ var urlUtils = {
 exports.default = urlUtils;
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(6);
+module.exports = __webpack_require__(8);
 
 
 /***/ })
