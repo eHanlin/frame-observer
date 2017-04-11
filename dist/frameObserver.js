@@ -676,10 +676,13 @@ FrameObserver.prototype = {
 
     var observer = this.getObserver_(el);
     var frameEventId = this.getFrameEventId_(el);
+    var _this = this;
 
     observer.on(eventName, func);
 
-    if (observer.getEventNumber(eventName) === 1) this.registerEvent(el, { eventName: eventName, frameEventId: frameEventId });
+    return new Promise(function (resolve, reject) {
+      if (observer.getEventNumber(eventName) === 1) _this.registerEvent(el, { eventName: eventName, frameEventId: frameEventId }).then(resolve);else resolve();
+    });
   },
 
   /**
@@ -691,10 +694,13 @@ FrameObserver.prototype = {
 
     var observer = this.getObserver_(el);
     var frameEventId = this.getFrameEventId_(el);
+    var _this = this;
 
     observer.off(eventName, func);
 
-    if (observer.getEventNumber(eventName) === 0) this.unregisterEvent(el, { eventName: eventName, frameEventId: frameEventId });
+    return new Promise(function (resolve, reject) {
+      if (observer.getEventNumber(eventName) === 0) _this.unregisterEvent(el, { eventName: eventName, frameEventId: frameEventId }).then(resolve);else resolve();
+    });
   },
 
   /**
@@ -982,8 +988,7 @@ var FrameObserverContext = function () {
         args[_key] = arguments[_key];
       }
 
-      _frameObserver2.default.on.apply(_frameObserver2.default, [this.scope].concat(args));
-      return this;
+      return _frameObserver2.default.on.apply(_frameObserver2.default, [this.scope].concat(args));
     }
   }, {
     key: 'off',
@@ -992,8 +997,7 @@ var FrameObserverContext = function () {
         args[_key2] = arguments[_key2];
       }
 
-      _frameObserver2.default.off.apply(_frameObserver2.default, [this.scope].concat(args));
-      return this;
+      return _frameObserver2.default.off.apply(_frameObserver2.default, [this.scope].concat(args));
     }
   }, {
     key: 'readyState',
@@ -1233,12 +1237,15 @@ RegisterMsgProcessor.prototype = {
       respMsgEvt.frameEventId = frameEventId;
       _util2.default.postMessage(source, respMsgEvt, origin);
     }, { target: source });
+
+    deferred.resolve();
+    _builder.processorBuilder.deferredRecv().apply(this, arguments);
   },
 
   /**
    * @param {Event} msgEvt
    */
-  onSendResp: function onSendResp(msgEvt) {}
+  onSendResp: _builder.processorBuilder.deferredSendResp()
 };
 
 exports.default = RegisterMsgProcessor;
@@ -1300,6 +1307,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _builder = __webpack_require__(1);
+
 /**
  * @class
  */
@@ -1323,12 +1332,14 @@ UnregisterMsgProcessor.prototype = {
     var frameEventId = param.frameEventId;
 
     frameObserver.registerEventObserver.off(eventName, undefined, source);
+    deferred.resolve();
+    _builder.processorBuilder.deferredRecv().apply(this, arguments);
   },
 
   /**
    * @param {Event} msgEvt
    */
-  onSendResp: function onSendResp(msgEvt) {}
+  onSendResp: _builder.processorBuilder.deferredSendResp()
 
 };
 
