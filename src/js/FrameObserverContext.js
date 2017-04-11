@@ -8,13 +8,11 @@ class FrameObserverContext {
   }
 
   on(...args){
-    frameObserver.on(this.scope, ...args);
-    return this;
+    return frameObserver.on(this.scope, ...args);
   }
 
   off(...args){
-    frameObserver.off(this.scope, ...args);
-    return this;
+    return frameObserver.off(this.scope, ...args);
   }
 
   readyState(...args){

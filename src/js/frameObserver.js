@@ -133,10 +133,14 @@ FrameObserver.prototype = {
 
     var observer = this.getObserver_( el );
     var frameEventId = this.getFrameEventId_( el );
+    var _this = this;
 
     observer.on( eventName, func );
 
-    if ( observer.getEventNumber( eventName ) === 1 ) this.registerEvent( el, {eventName:eventName, frameEventId:frameEventId} );
+    return new Promise(function(resolve, reject) {
+      if ( observer.getEventNumber( eventName ) === 1 ) _this.registerEvent( el, {eventName:eventName, frameEventId:frameEventId} ).then(resolve);
+      else resolve()
+    });
   },
 
   /**
@@ -148,10 +152,14 @@ FrameObserver.prototype = {
 
     var observer = this.getObserver_( el );
     var frameEventId = this.getFrameEventId_( el );
+    var _this = this;
 
     observer.off( eventName, func );
 
-    if ( observer.getEventNumber( eventName ) === 0 ) this.unregisterEvent( el, {eventName:eventName, frameEventId:frameEventId} );
+    return new Promise(function(resolve, reject) {
+      if ( observer.getEventNumber( eventName ) === 0 ) _this.unregisterEvent( el, {eventName:eventName, frameEventId:frameEventId} ).then(resolve);
+      else resolve();
+    });
   },
 
   /**

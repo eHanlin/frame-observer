@@ -1,4 +1,6 @@
 
+import {processorBuilder} from '../builder'; 
+
 /**
  * @class
  */
@@ -22,14 +24,14 @@ UnregisterMsgProcessor.prototype = {
     var frameEventId = param.frameEventId;
 
     frameObserver.registerEventObserver.off( eventName, undefined, source );
+    deferred.resolve();
+    processorBuilder.deferredRecv().apply(this, arguments);
   },
 
   /**
    * @param {Event} msgEvt
    */
-  onSendResp:function( msgEvt ){
-
-  }
+  onSendResp:processorBuilder.deferredSendResp()
 
 };
 

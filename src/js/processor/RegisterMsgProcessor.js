@@ -1,6 +1,6 @@
 
 import util from '../utils/util';
-import {buildMessageEvent} from '../builder'; 
+import {buildMessageEvent, processorBuilder} from '../builder'; 
 import {SEND} from '../constants/Event';
 import {EVENT} from '../constants/MessageType';
 
@@ -33,14 +33,15 @@ RegisterMsgProcessor.prototype = {
       respMsgEvt.frameEventId = frameEventId;
       util.postMessage( source, respMsgEvt, origin );
     }, {target:source} );
+
+    deferred.resolve();
+    processorBuilder.deferredRecv().apply(this, arguments);
   },
 
   /**
    * @param {Event} msgEvt
    */
-  onSendResp:function( msgEvt ){
-
-  }
+  onSendResp:processorBuilder.deferredSendResp()
 };
 
 export default RegisterMsgProcessor;
