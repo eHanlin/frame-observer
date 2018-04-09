@@ -26,3 +26,12 @@ after_success:
 notifications:
   email:
     - sparrow.jang@gmail.com
+deploy:
+  provider: npm
+  email: sparrow.jang@gmail.com
+  skip_cleanup: true
+  on:
+    tags: true
+  api_key:
+    secure: S4GN4Fw1wfjXi88rW/1/i27vEfsSTkI93FxtaRMc4mQ/f4qWDHhLYAU4O/RTrqnw20w6HZ9lJ/v4N/8+cfGEsLiFwVodMMT7Qc49bTLDLtf/QryhgnhtD9mrsRwiY6Y1QGbAbaPQZj826V9GOMGQyKt4Xc5kDo8b6X/ry4iCNRP0piewl3j2MZ0YLtHjp3vzvRaSb34ULOF1VqQKNlwuHezG5VrNWDw2wI0lAhVJs5JDAmbLMFvXG34HWbYN+fUIuKlPdhOQdqmUrDKzNSROdNtc4oIiLnQuJsdUOSSuJRMnbiI+wWUCy6J/EC1qzG2sYzrYHumF3G4JQm6SR1AOYfjKJNtz7w/kdjJ8V3h0e7faCLacFZVDwA7paDrLyZW/wvbN5a1g9vE47Q3QWNURUYll3t59bQd7gcuzW84Ki5gLeaeNN1IEOn0yjg3F3h58s6gL4HhqFZIAyQAGB5Xo0GfpuWHEO1GjTo+ERmOcnbYBVtW1QL6qXtI6QZqQX4ZCxvjC/pIV8Er7pNzXwHK6ASyxA26sdAd4ioeiEG+c7siOolSQNOtdzlq89D3cFILqqgpRGnpsh3r9Z1YRCcNIsaVRrh7JIUbl827Nbl+sf7R75c+Ie68APiEsJew/MgTNlc2IfVSx635HfqDXEBozO10EUPh3w2lwVzH0s/llhsk=
+
