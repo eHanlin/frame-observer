@@ -48,5 +48,6 @@
     "event"
   ],
   "author": "Sparrow.jang",
-  "dependencies": {}
+  "dependencies": {},
+  "license": "MIT"
 }
