@@ -1383,7 +1383,7 @@ var urlUtils = {
    */
   getOriginByFrameEl: function getOriginByFrameEl(el) {
 
-    return _util2.default.isElement(el) ? urlUtils.getOrigin(el.src) : document.referrer;
+    return _util2.default.isElement(el) ? urlUtils.getOrigin(el.src) : document.referrer ? document.referrer : urlUtils.getOrigin(document.location.href);
   }
 };
 

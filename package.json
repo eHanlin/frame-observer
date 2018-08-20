@@ -1,6 +1,6 @@
 {
   "name": "frame-observer",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "dist/frameObserver.js",
   "description": "This is iframe observer. Be Able to use it when you need get frame states or event listeners.",
   "repository": {
