@@ -22,7 +22,7 @@ var urlUtils = {
    */
   getOriginByFrameEl:function( el ){
 
-    return util.isElement( el ) ? urlUtils.getOrigin( el.src ) : document.referrer;
+    return util.isElement( el ) ? urlUtils.getOrigin( el.src ) : (document.referrer ? document.referrer : urlUtils.getOrigin(document.location.href));
   }
 };
 
