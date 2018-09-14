@@ -13,7 +13,7 @@ var urlUtils = {
    */
   getOrigin:function( url ){
     var result = /https?:\/\/[^/]*\/?/.exec( url );
-    return result.length ? result[0] : null;
+    return result && result.length ? result[0] : null;
   },
 
   /** 
