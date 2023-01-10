@@ -1374,7 +1374,7 @@ var urlUtils = {
    */
   getOrigin: function getOrigin(url) {
     var result = /https?:\/\/[^/]*\/?/.exec(url);
-    return result.length ? result[0] : null;
+    return result && result.length ? result[0] : null;
   },
 
   /** 
@@ -1383,7 +1383,7 @@ var urlUtils = {
    */
   getOriginByFrameEl: function getOriginByFrameEl(el) {
 
-    return _util2.default.isElement(el) ? urlUtils.getOrigin(el.src) : document.referrer;
+    return _util2.default.isElement(el) ? urlUtils.getOrigin(el.src) : document.referrer ? document.referrer : urlUtils.getOrigin(document.location.href);
   }
 };
 
