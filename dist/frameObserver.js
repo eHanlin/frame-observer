@@ -696,7 +696,11 @@ FrameObserver.prototype = {
     var frameEventId = this.getFrameEventId_(el);
     var _this = this;
 
-    observer.off(eventName, func);
+    if (arguments.length == 2) {
+      observer.off(eventName);
+    } else {
+      observer.off(eventName, func);
+    }
 
     return new Promise(function (resolve, reject) {
       if (observer.getEventNumber(eventName) === 0) _this.unregisterEvent(el, { eventName: eventName, frameEventId: frameEventId }).then(resolve);else resolve();
