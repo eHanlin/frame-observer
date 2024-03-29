@@ -48,7 +48,11 @@ EventObserver.prototype = {
 
     var eventList = this.events[name] || [];
 
-    if ( arguments.length === 1 ) {
+    if (arguments.length == 0) {
+      for(var name in this.events) {
+        delete this.events[name];
+      }      
+    } else if ( arguments.length === 1 ) {
 
       delete this.events[name];
 
