@@ -869,7 +869,11 @@ EventObserver.prototype = {
 
     var eventList = this.events[name] || [];
 
-    if (arguments.length === 1) {
+    if (arguments.length == 0) {
+      for (var name in this.events) {
+        delete this.events[name];
+      }
+    } else if (arguments.length === 1) {
 
       delete this.events[name];
     } else {
@@ -1387,7 +1391,9 @@ var urlUtils = {
    */
   getOriginByFrameEl: function getOriginByFrameEl(el) {
 
-    return _util2.default.isElement(el) ? urlUtils.getOrigin(el.src) : document.referrer ? document.referrer : urlUtils.getOrigin(document.location.href);
+    var result = _util2.default.isElement(el) ? urlUtils.getOrigin(el.src) : document.referrer ? document.referrer : urlUtils.getOrigin(document.location.href);
+    console.log('postmessage', el, result);
+    return result;
   }
 };
 
