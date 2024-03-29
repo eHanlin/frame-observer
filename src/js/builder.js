@@ -25,7 +25,7 @@ var buildMessageEvent = function( type, direction, data, id, extraAttrs ){
  * @param {String} eventType
  * @param {Object} extraAttrs
  */
-var buildFrameCaller = function( eventType, extraAttrs ){
+var buildFrameCaller = function( eventType, extraAttrs){
 
   /**
    * @param {HTMLElement} el
@@ -43,7 +43,11 @@ var buildFrameCaller = function( eventType, extraAttrs ){
       deferred:deferred
     };
 
-    origin = urlUtils.getOriginByFrameEl( el );
+    if (this.createOrigin == null) {
+      origin = urlUtils.getOriginByFrameEl( el );
+    } else {
+      origin = this.createOrigin(el);
+    }
     contentWindow = util.getContentWindowByEl( el );
     util.postMessage( contentWindow, msgEvt, origin );
 
