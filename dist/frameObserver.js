@@ -314,7 +314,11 @@ var buildFrameCaller = function buildFrameCaller(eventType, extraAttrs) {
       deferred: deferred
     };
 
-    origin = _urlUtils2.default.getOriginByFrameEl(el);
+    if (this.createOrigin == null) {
+      origin = _urlUtils2.default.getOriginByFrameEl(el);
+    } else {
+      origin = this.createOrigin(el);
+    }
     contentWindow = _util2.default.getContentWindowByEl(el);
     _util2.default.postMessage(contentWindow, msgEvt, origin);
 
@@ -1391,9 +1395,7 @@ var urlUtils = {
    */
   getOriginByFrameEl: function getOriginByFrameEl(el) {
 
-    var result = _util2.default.isElement(el) ? urlUtils.getOrigin(el.src) : document.referrer ? document.referrer : urlUtils.getOrigin(document.location.href);
-    console.log('postmessage', el, result);
-    return result;
+    return _util2.default.isElement(el) ? urlUtils.getOrigin(el.src) : document.referrer ? document.referrer : urlUtils.getOrigin(document.location.href);
   }
 };
 
