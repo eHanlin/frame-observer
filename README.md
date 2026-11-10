@@ -160,16 +160,19 @@ npm run build
 
 ## Test
 
-Playwright runs unit and cross-origin iframe tests in Chromium (parent on `localhost`, child frames on `127.0.0.1`).
+Playwright runs unit and cross-origin iframe tests in Chromium, Firefox and WebKit (parent on `localhost`, child frames on `127.0.0.1`).
 
 ```bash
-npx playwright install chromium
+npx playwright install chromium firefox webkit
 
 # test src/
 npm run test
 
 # run the integration tests against dist/frameObserver.js
 npm run test:dist
+
+# a single browser
+npm run test -- --project=firefox
 ```
 
 [npm-badge]: https://img.shields.io/npm/v/frame-observer.svg?style=flat-square
