@@ -131,7 +131,7 @@ var util = {
    * @type boolean
    */
   isArray: function isArray(obj) {
-    return typeof Object.prototype.toString.call(obj) == "[object Array]";
+    return Object.prototype.toString.call(obj) === "[object Array]";
   },
 
   /**
@@ -139,17 +139,7 @@ var util = {
    * @param {Object} obj
    * @type Object
    */
-  clone: function (_clone) {
-    function clone(_x, _x2, _x3) {
-      return _clone.apply(this, arguments);
-    }
-
-    clone.toString = function () {
-      return _clone.toString();
-    };
-
-    return clone;
-  }(function (deep, cloneObj, copyObj) {
+  clone: function clone(deep, cloneObj, copyObj) {
 
     var target,
         obj,
@@ -157,7 +147,9 @@ var util = {
         copyObjs;
 
     if (typeof deep != "boolean") {
-      target = deep, copyObjs = params.slice(1);
+      target = deep;
+      deep = false;
+      copyObjs = params.slice(1);
     } else {
       target = cloneObj;
       copyObjs = params.slice(2);
@@ -169,20 +161,28 @@ var util = {
 
       for (var i in obj) {
 
-        if (util.isArray(obj[i])) {
+        var value = obj[i];
 
-          target[i] = util.isArray(target[i]) ? target[i] : [];
-        } else if (util.isObject(obj[i])) {
+        if (deep && value !== null && util.isObject(value)) {
 
-          target[i] = util.isObject(target[i]) ? target[i] : {};
+          if (util.isArray(value)) {
+
+            target[i] = util.isArray(target[i]) ? target[i] : [];
+          } else {
+
+            target[i] = target[i] !== null && util.isObject(target[i]) && !util.isArray(target[i]) ? target[i] : {};
+          }
+
+          util.clone(true, target[i], value);
+        } else {
+
+          target[i] = value;
         }
-
-        if (deep && util.isObject(obj[i])) clone(target[i], obj[i]);else target[i] = obj[i];
       }
     }
 
     return target;
-  }),
+  },
 
   /***
    * @param {Array} array
@@ -414,7 +414,7 @@ var buildDeferred = function buildDeferred() {
     promise.then(function (val) {
 
       always.apply(null, toArray(val));
-    }, function () {
+    }, function (val) {
 
       always.apply(null, toArray(val));
     });
@@ -599,6 +599,9 @@ FrameObserver.prototype = {
 
     //event filter if source is not sended from FrameObserver
     if (_util2.default.isObject(msgEvt) && msgEvt && _Config.FRAME_OBSERVER in msgEvt) {
+      //ignore unknown message types
+      if (!Object.prototype.hasOwnProperty.call(this.msgProcessors, msgEvt.type)) return;
+
       var deferred = (0, _buildDeferred2.default)();
       var source = evt.source;
 
@@ -953,12 +956,18 @@ EventObserver.prototype = {
       eventList[i].func.apply(null, params);
     }
 
+    var onceList = [];
+
     for (i = 0; i < eventList.length; i++) {
 
-      if (eventList[i].once) {
+      if (eventList[i].once) onceList.push(eventList[i]);
+    }
 
-        target ? this.off(name, opts.func, opts.target) : this.off(name, opts.func);
-      }
+    if (onceList.length && this.events[name]) {
+
+      this.events[name] = this.events[name].filter(function (evt) {
+        return onceList.indexOf(evt) === -1;
+      });
     }
   }
 };
