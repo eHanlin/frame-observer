@@ -4,6 +4,7 @@ const PORT = Number(process.env.PORT || 4173);
 
 module.exports = defineConfig({
   testDir: './tests',
+  outputDir: './test-results',
   // unit.spec.js needs the internals exposed by entry.js, which dist/ does not export.
   testIgnore: process.env.FO_TARGET === 'dist' ? ['**/unit.spec.js'] : [],
   globalSetup: require.resolve('./global-setup'),
