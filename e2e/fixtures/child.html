@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>frame-observer child</title>
+</head>
+<body>
+  <script src="build/frameObserver.test.js"></script>
+  <script>
+    var fo = window.frameObserver;
+    var query = new URLSearchParams(location.search);
+
+    fo.registerMethods({
+      add: function (deferred, a, b) {
+        deferred.resolve(a + b);
+      },
+      echo: function (deferred) {
+        deferred.resolve.apply(null, Array.prototype.slice.call(arguments, 1));
+      },
+      asyncAdd: function (deferred, a, b) {
+        setTimeout(function () { deferred.resolve(a + b); }, 100);
+      },
+      fail: function (deferred, reason) {
+        deferred.reject(reason);
+      }
+    });
+
+    // ?autoReady=0 lets a test decide when the "ready" state is resolved.
+    if (query.get('autoReady') !== '0') fo.resolveState('ready', 'child-ready', query.get('name'));
+  </script>
+</body>
+</html>

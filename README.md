@@ -1,4 +1,4 @@
-frame observer [![npm package][npm-badge]][npm] [![Travis][build-badge]][build] [![codecov][codecov-badge]][codecov] 
+frame observer [![npm package][npm-badge]][npm]
 ==================================
 
 This is iframe observer. Be Able to use it when you need get frame states or event listeners.
@@ -160,16 +160,18 @@ npm run build
 
 ## Test
 
+Playwright runs unit and cross-origin iframe tests in Chromium (parent on `localhost`, child frames on `127.0.0.1`).
+
 ```bash
+npx playwright install chromium
+
+# test src/
 npm run test
+
+# run the integration tests against dist/frameObserver.js
+npm run test:dist
 ```
 
 [npm-badge]: https://img.shields.io/npm/v/frame-observer.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/frame-observer
- 
-[build-badge]: https://img.shields.io/travis/eHanlin/frame-observer/master.svg?style=flat-square
-[build]: https://travis-ci.org/eHanlin/frame-observer
- 
-[codecov-badge]: https://codecov.io/gh/eHanlin/frame-observer/branch/master/graph/badge.svg
-[codecov]: https://codecov.io/gh/eHanlin/frame-observer
 

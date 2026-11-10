@@ -29,7 +29,7 @@ var buildDeferred = function() {
 
       always.apply(null, toArray(val));
     },
-    function(){
+    function(val){
 
       always.apply(null, toArray(val));
     });

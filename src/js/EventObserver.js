@@ -128,12 +128,18 @@ EventObserver.prototype = {
       eventList[i].func.apply( null, params )
     }
 
+    var onceList = [];
+
     for ( i = 0; i < eventList.length ; i++ ) {
 
-      if ( eventList[i].once ) {
+      if ( eventList[i].once ) onceList.push( eventList[i] );
+    }
 
-        target? this.off( name, opts.func, opts.target ) : this.off( name, opts.func );
-      }
+    if ( onceList.length && this.events[name] ) {
+
+      this.events[name] = this.events[name].filter(function( evt ){
+        return onceList.indexOf( evt ) === -1;
+      });
     }
 
   }
