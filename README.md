@@ -170,7 +170,7 @@ npx playwright install chromium firefox webkit
 # test src/
 npm run test
 
-# run the integration tests against dist/frameObserver.js
+# run the integration and packaging tests against dist/frameObserver.js
 npm run test:dist
 
 # a single browser

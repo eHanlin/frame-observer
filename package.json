@@ -18,6 +18,7 @@
     "@babel/core": "^8.1.0",
     "@babel/preset-env": "^8.0.7",
     "@playwright/test": "^1.65.0",
+    "acorn": "^8.19.0",
     "babel-loader": "^10.1.1",
     "esbuild": "^0.28.2",
     "webpack": "^5.112.2",

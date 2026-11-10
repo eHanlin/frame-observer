@@ -48,6 +48,16 @@ test.describe('readyState', () => {
     const result = await page.evaluate(() => settleWithin(frameObserver.readyState($frames.c, 'other'), 300));
     expect(result).toEqual({ status: 'timeout' });
   });
+
+  test('every pending readyState call resolves once the state is resolved', async ({ page }) => {
+    await page.evaluate(() => createFrame('c', 'autoReady=0'));
+    await page.evaluate(() => {
+      window.waiters = [1, 2, 3].map(() => settleWithin(frameObserver.readyState($frames.c, 'ready'), 3000));
+    });
+    await inChild(page, 'c', () => frameObserver.resolveState('ready', 'go'));
+    const results = await page.evaluate(() => Promise.all(waiters));
+    expect(results).toEqual(Array(3).fill({ status: 'resolved', value: [{ result: { 0: ['go'] } }] }));
+  });
 });
 
 test.describe('callMethod', () => {
@@ -212,6 +222,18 @@ test.describe('events (on / off / trigger)', () => {
     expect(await childHandlerCount(page, 'c', 'ping')).toBe(0);
   });
 
+  test('off for an event that was never listened to resolves', async ({ page }) => {
+    await page.evaluate(() => createFrame('c'));
+    const results = await page.evaluate(() =>
+      Promise.all([
+        settleWithin(frameObserver.off($frames.c, 'never'), 3000),
+        settleWithin(frameObserver.off($frames.c, 'never2', () => {}), 3000),
+      ]).then((rs) => rs.map((r) => r.status))
+    );
+    expect(results).toEqual(['resolved', 'resolved']);
+    expect(await childHandlerCount(page, 'c', 'never')).toBe(0);
+  });
+
   test('events can be listened to again after off', async ({ page }) => {
     await page.evaluate(() => createFrame('c'));
     await page.evaluate(async () => {
@@ -277,6 +299,29 @@ test.describe('getContext', () => {
     await page.evaluate(() => frameObserver.getContext($frames.c).off('ping'));
     expect(await inChild(page, 'c', () => frameObserver.registerEventObserver.getEventNumber('ping'))).toBe(0);
   });
+
+  test('child can use getContext(window.parent) for methods, states and events', async ({ page }) => {
+    await page.evaluate(() => {
+      frameObserver.registerMethods({ mul: (d, a, b) => d.resolve(a * b) });
+      return createFrame('c');
+    });
+    const result = await inChild(page, 'c', async () => {
+      const ctx = frameObserver.getContext(window.parent);
+      window.received = [];
+      await ctx.on('fromParent', (evt, v) => received.push(v));
+      window.parentReady = ctx.readyState('parentReady');
+      const product = await ctx.callMethod('mul', 6, 7);
+      return { product: product[0].result[0], element: ctx.getElement() };
+    });
+    expect(result).toEqual({ product: 42, element: null });
+
+    await page.evaluate(() => {
+      frameObserver.resolveState('parentReady', 'p');
+      frameObserver.trigger('fromParent', 'hi');
+    });
+    expect(await inChild(page, 'c', () => window.parentReady)).toEqual([{ result: { 0: ['p'] } }]);
+    await expect.poll(() => inChild(page, 'c', () => received)).toEqual(['hi']);
+  });
 });
 
 test.describe('message filtering', () => {
@@ -306,5 +351,75 @@ test.describe('message filtering', () => {
     const resp = await page.evaluate(() => frameObserver.callMethod($frames.c, 'add', 1, 2));
     expect(resp[0].result[0]).toBe(3);
     expect(errors).toEqual([]);
+  });
+});
+
+test.describe('same-origin iframe', () => {
+  test('readyState, callMethod and events work without crossing origins', async ({ page }) => {
+    await page.evaluate(() => createFrame('s', '', location.origin));
+    const sameOrigin = await page.evaluate(() => $frames.s.contentWindow.location.origin === location.origin);
+    expect(sameOrigin).toBe(true);
+
+    const result = await page.evaluate(async () => {
+      const ready = await frameObserver.readyState($frames.s, 'ready');
+      const sum = await frameObserver.callMethod($frames.s, 'add', 2, 3);
+      window.calls = [];
+      await frameObserver.on($frames.s, 'ping', (evt, v) => calls.push(v));
+      return { ready, sum: sum[0].result[0] };
+    });
+    expect(result).toEqual({ ready: [{ result: { 0: ['child-ready', 's'] } }], sum: 5 });
+
+    await inChild(page, 's', () => frameObserver.trigger('ping', 'same'));
+    await expect.poll(() => page.evaluate(() => calls)).toEqual(['same']);
+  });
+});
+
+test.describe('nested iframes', () => {
+  // top (localhost) -> c (127.0.0.1) -> gc (localhost): every hop is cross-origin.
+  const setup = async (page) => {
+    await page.evaluate(() => createFrame('c'));
+    const topOrigin = await page.evaluate(() => location.origin);
+    await inChild(page, 'c', (origin) => createFrame('gc', '', origin), topOrigin);
+  };
+
+  test('a frame can call both its child and its parent', async ({ page }) => {
+    await setup(page);
+    await inChild(page, 'c', () => frameObserver.registerMethods({ fromGc: (d, v) => d.resolve('c:' + v) }));
+
+    const topToChild = await page.evaluate(() => frameObserver.callMethod($frames.c, 'add', 1, 2));
+    const childToGrandchild = await inChild(page, 'c', () => frameObserver.callMethod($frames.gc, 'add', 3, 4));
+    const grandchildToChild = await inChild(page, 'gc', () => frameObserver.callMethod(window.parent, 'fromGc', 'x'));
+
+    expect([topToChild[0].result[0], childToGrandchild[0].result[0], grandchildToChild[0].result[0]]).toEqual([3, 7, 'c:x']);
+  });
+
+  test('events stay within each parent/child pair', async ({ page }) => {
+    await setup(page);
+    await page.evaluate(() => {
+      window.calls = [];
+      return frameObserver.on($frames.c, 'ping', (evt, v) => calls.push(v));
+    });
+    await inChild(page, 'c', () => {
+      window.calls = [];
+      return frameObserver.on($frames.gc, 'ping', (evt, v) => calls.push(v));
+    });
+
+    await inChild(page, 'gc', () => frameObserver.trigger('ping', 'from-gc'));
+    await expect.poll(() => inChild(page, 'c', () => calls)).toEqual(['from-gc']);
+
+    await inChild(page, 'c', () => frameObserver.trigger('ping', 'from-c'));
+    await expect.poll(() => page.evaluate(() => calls)).toEqual(['from-c']);
+    expect(await inChild(page, 'c', () => calls)).toEqual(['from-gc']);
+  });
+});
+
+test.describe('serialization', () => {
+  test('params and results are passed through JSON', async ({ page }) => {
+    await page.evaluate(() => createFrame('c'));
+    const resp = await page.evaluate(() =>
+      frameObserver.callMethod($frames.c, 'echo', undefined, function () {}, new Date(0), NaN, { u: undefined, n: null, list: [undefined, 1] })
+    );
+    // JSON.stringify: undefined / functions / NaN in arrays -> null, Date -> ISO string, undefined properties dropped.
+    expect(resp).toEqual([{ result: { 0: null, 1: null, 2: '1970-01-01T00:00:00.000Z', 3: null, 4: { n: null, list: [null, 1] } } }]);
   });
 });

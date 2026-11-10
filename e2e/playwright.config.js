@@ -7,8 +7,9 @@ const BRANDED = process.env.FO_BRANDED === '1';
 module.exports = defineConfig({
   testDir: './tests',
   outputDir: './test-results',
-  // unit.spec.js needs the internals exposed by entry.js, which dist/ does not export.
-  testIgnore: process.env.FO_TARGET === 'dist' ? ['**/unit.spec.js'] : [],
+  // unit.spec.js needs the internals exposed by entry.js, which dist/ does not export;
+  // package.spec.js checks dist/ itself, so it only runs with FO_TARGET=dist.
+  testIgnore: process.env.FO_TARGET === 'dist' ? ['**/unit.spec.js'] : ['**/package.spec.js'],
   globalSetup: require.resolve('./global-setup'),
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
