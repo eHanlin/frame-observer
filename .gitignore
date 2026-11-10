@@ -2,3 +2,6 @@ node_modules
 *.swp
 bower_components
 coverage
+e2e/fixtures/build
+e2e/test-results
+e2e/playwright-report

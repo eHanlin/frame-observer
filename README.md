@@ -164,6 +164,20 @@ npm run build
 npm run test
 ```
 
+### Playwright (e2e)
+
+Runs unit and cross-origin iframe tests against `src/` in Chromium (parent on `localhost`, child frames on `127.0.0.1`).
+
+```bash
+cd e2e
+npm install
+npx playwright install chromium
+npm test
+
+# run the integration tests against dist/frameObserver.js
+npm run test:dist
+```
+
 [npm-badge]: https://img.shields.io/npm/v/frame-observer.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/frame-observer
  
