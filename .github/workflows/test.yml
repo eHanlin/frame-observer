@@ -35,13 +35,30 @@ jobs:
         run: git diff --exit-code -- dist
 
   test:
-    name: test (${{ matrix.browser }})
+    name: test (${{ matrix.project }})
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      # enable the Google Chrome / Microsoft Edge projects (preinstalled on ubuntu runners)
+      FO_BRANDED: '1'
     strategy:
       fail-fast: false
       matrix:
-        browser: [chromium, firefox, webkit]
+        include:
+          - project: chromium
+            install: chromium
+          - project: firefox
+            install: firefox
+          - project: webkit
+            install: webkit
+          - project: mobile-chrome
+            install: chromium
+          - project: mobile-safari
+            install: webkit
+          - project: chrome
+            install: ''
+          - project: msedge
+            install: ''
     steps:
       - uses: actions/checkout@v7
 
@@ -53,19 +70,20 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Install Playwright ${{ matrix.browser }}
-        run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Install Playwright ${{ matrix.install }}
+        if: matrix.install != ''
+        run: npx playwright install --with-deps ${{ matrix.install }}
 
       - name: Test src
-        run: npm test -- --project=${{ matrix.browser }}
+        run: npm test -- --project=${{ matrix.project }}
 
       - name: Test dist
-        run: npm run test:dist -- --project=${{ matrix.browser }}
+        run: npm run test:dist -- --project=${{ matrix.project }}
 
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: playwright-test-results-${{ matrix.browser }}
+          name: playwright-test-results-${{ matrix.project }}
           path: e2e/test-results
           retention-days: 7
