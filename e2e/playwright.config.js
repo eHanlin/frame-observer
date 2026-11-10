@@ -16,6 +16,7 @@ module.exports = defineConfig({
   use: {
     // Parent page runs on localhost; child frames are loaded from 127.0.0.1 (cross-origin).
     baseURL: `http://localhost:${PORT}`,
+    trace: 'retain-on-failure',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
