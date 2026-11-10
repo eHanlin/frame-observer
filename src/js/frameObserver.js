@@ -52,6 +52,9 @@ FrameObserver.prototype = {
 
     //event filter if source is not sended from FrameObserver
     if ( util.isObject( msgEvt ) && msgEvt && FRAME_OBSERVER in msgEvt ) {
+      //ignore unknown message types
+      if ( !Object.prototype.hasOwnProperty.call( this.msgProcessors, msgEvt.type ) ) return;
+
       var deferred = Deferred();
       var source = evt.source;
 

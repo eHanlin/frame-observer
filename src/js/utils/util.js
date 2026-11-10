@@ -34,7 +34,7 @@ var util = {
    * @param {Object} obj
    * @type boolean
    */
-  isArray:function( obj ){ return typeof Object.prototype.toString.call(obj) == "[object Array]"; },
+  isArray:function( obj ){ return Object.prototype.toString.call(obj) === "[object Array]"; },
 
   /**
    * @param {Object} target
@@ -46,7 +46,8 @@ var util = {
     var target, obj, params = this.copyArray( arguments ), copyObjs;
 
     if ( typeof deep != "boolean" ) {
-      target = deep,
+      target = deep;
+      deep = false;
       copyObjs = params.slice(1);
     } else {
       target = cloneObj;
@@ -59,19 +60,25 @@ var util = {
 
       for ( var i in obj ) {
 
-        if ( util.isArray( obj[i] ) ) {
+        var value = obj[i];
 
-          target[i] = util.isArray( target[i] ) ? target[i]: [];
+        if ( deep && value !== null && util.isObject( value ) ) {
 
-        } else if ( util.isObject( obj[i] ) ) {
+          if ( util.isArray( value ) ) {
 
-          target[i] = util.isObject( target[i] ) ? target[i]: {};
+            target[i] = util.isArray( target[i] ) ? target[i]: [];
 
+          } else {
+
+            target[i] = target[i] !== null && util.isObject( target[i] ) && !util.isArray( target[i] ) ? target[i]: {};
+          }
+
+          util.clone( true, target[i], value );
+
+        } else {
+
+          target[i] = value;
         }
-
-        if ( deep && util.isObject( obj[i] ) ) clone( target[i], obj[i] );
-
-        else target[i] = obj[i];
       }
     }
 
